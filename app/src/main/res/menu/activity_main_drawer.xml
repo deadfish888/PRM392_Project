@@ -13,16 +13,12 @@
             android:icon="@android:drawable/sym_action_chat"
             android:title="@string/menu_chat" />
         <item
-            android:id="@+id/nav_message"
-            android:icon="@android:drawable/ic_dialog_info"
-            android:title="@string/menu_message" />
-        <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_launcher_foreground"
-            android:title="Account" />
+            android:title="@string/account" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@android:drawable/ic_lock_power_off"
-            android:title="Logout" />
+            android:title="@string/logout" />
     </group>
 </menu>

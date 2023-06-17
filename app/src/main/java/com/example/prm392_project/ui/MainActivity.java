@@ -1,9 +1,10 @@
-package com.example.prm392_project;
+package com.example.prm392_project.ui;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.prm392_project.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
