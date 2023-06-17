@@ -5,10 +5,9 @@ import com.example.prm392_project.data.model.User;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AuthApiManager {
-    private static IAuthApi service;
+    private static IApi service;
     private static AuthApiManager apiManager;
     private AuthApiManager() {
         service = RetrofitService.Create();
