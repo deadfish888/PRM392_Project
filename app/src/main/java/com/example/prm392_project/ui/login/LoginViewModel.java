@@ -8,14 +8,19 @@ import android.util.Patterns;
 
 import com.example.prm392_project.data.LoginRepository;
 import com.example.prm392_project.data.Result;
+import com.example.prm392_project.data.DTO.Login;
 import com.example.prm392_project.data.model.User;
 import com.example.prm392_project.R;
+import com.example.prm392_project.data.repository.AuthRepository;
+
+import java.io.IOException;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
+    private AuthRepository authRepository;
 
     LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
@@ -31,8 +36,14 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
-        Result<User> result = loginRepository.login(username, password);
-
+        Login loginRequest = new Login(username, password);
+        //Result<User> result = loginRepository.login(username, password);
+        Result<User> result;
+        try{
+            result = new Result.Success<>(authRepository.login(loginRequest).getValue());
+        }catch (Exception e){
+            result= new Result.Error(new IOException("Error logging in", e));
+        }
         if (result instanceof Result.Success) {
             User data = ((Result.Success<User>) result).getData();
             loginResult.setValue(new LoginResult(data));
@@ -65,6 +76,6 @@ public class LoginViewModel extends ViewModel {
 
     // A placeholder password validation check
     private boolean isPasswordValid(String password) {
-        return password != null && password.trim().length() > 5;
+        return password != null && password.trim().length() > 4;
     }
 }

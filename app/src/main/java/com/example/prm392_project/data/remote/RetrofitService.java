@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitService {
     public static IApi Create(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5147/")
+                .baseUrl("http://139.59.115.128")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(IApi.class);

@@ -1,4 +1,4 @@
-package com.example.prm392_project.data.model;
+package com.example.prm392_project.data.DTO;
 
 public class Login {
     private String username;
