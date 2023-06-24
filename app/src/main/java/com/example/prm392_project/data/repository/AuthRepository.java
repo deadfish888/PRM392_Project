@@ -2,7 +2,7 @@ package com.example.prm392_project.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.prm392_project.data.DTO.Login;
+import com.example.prm392_project.data.DTO.Auth.Login;
 import com.example.prm392_project.data.model.User;
 import com.example.prm392_project.data.remote.AuthApiManager;
 

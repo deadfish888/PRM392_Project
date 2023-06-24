@@ -1,6 +1,6 @@
 package com.example.prm392_project.data.remote;
 
-import com.example.prm392_project.data.DTO.Login;
+import com.example.prm392_project.data.DTO.Auth.Login;
 import com.example.prm392_project.data.model.User;
 
 import retrofit2.Call;

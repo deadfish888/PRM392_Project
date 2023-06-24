@@ -8,7 +8,7 @@ import android.util.Patterns;
 
 import com.example.prm392_project.data.LoginRepository;
 import com.example.prm392_project.data.Result;
-import com.example.prm392_project.data.DTO.Login;
+import com.example.prm392_project.data.DTO.Auth.Login;
 import com.example.prm392_project.data.model.User;
 import com.example.prm392_project.R;
 import com.example.prm392_project.data.repository.AuthRepository;

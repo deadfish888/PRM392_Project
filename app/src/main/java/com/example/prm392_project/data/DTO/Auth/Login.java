@@ -1,4 +1,4 @@
-package com.example.prm392_project.data.DTO;
+package com.example.prm392_project.data.DTO.Auth;
 
 public class Login {
     private String username;
