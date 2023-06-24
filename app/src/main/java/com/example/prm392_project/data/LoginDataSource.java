@@ -14,6 +14,8 @@ public class LoginDataSource {
         try {
             // TODO: handle loggedInUser authentication
             User fakeUser = new User("Ravens");
+            fakeUser.setPhone("012345679");
+            fakeUser.setRole("Student");
             return new Result.Success<>(fakeUser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));

@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_chat" />
 
     <fragment
-        android:id="@+id/nav_message"
-        android:name="com.example.prm392_project.ui.message.MessageFragment"
-        android:label="@string/menu_message"
+        android:id="@+id/nav_account"
+        android:name="com.example.prm392_project.ui.account.AccountFragment"
+        android:label="Account"
         tools:layout="@layout/fragment_message" />
 </navigation>
