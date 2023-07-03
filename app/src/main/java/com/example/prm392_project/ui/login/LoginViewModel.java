@@ -2,6 +2,7 @@ package com.example.prm392_project.ui.login;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
@@ -19,13 +20,10 @@ public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+
+    private Result<User> result;
+
     private AuthRepository authRepository;
-
-//    LoginViewModel(LoginRepository loginRepository) {
-//        this.loginRepository = loginRepository;
-//    }
-
     LoginViewModel(AuthRepository loginRepository) {
         this.authRepository = loginRepository;
     }
@@ -42,12 +40,17 @@ public class LoginViewModel extends ViewModel {
         // can be launched in a separate asynchronous job
         Login loginRequest = new Login(username, password);
         //Result<User> result = loginRepository.login(username, password);
-        Result<User> result;
-        try{
-            result = new Result.Success<>(authRepository.login(loginRequest).getValue());
-        }catch (Exception e){
-            result= new Result.Error(new IOException("Error logging in", e));
-        }
+        authRepository.login(loginRequest).observeForever( resul -> {
+            if (resul instanceof Result.Success) {
+                User data = ((Result.Success<User>) resul).getData();
+                // Login successful
+                result =new Result.Success<>(data);
+            } else {
+                // Login error
+                result = new Result.Error(new IOException("Login failed"));
+            }
+        });
+
         if (result instanceof Result.Success) {
             User data = ((Result.Success<User>) result).getData();
             loginResult.setValue(new LoginResult(data));
