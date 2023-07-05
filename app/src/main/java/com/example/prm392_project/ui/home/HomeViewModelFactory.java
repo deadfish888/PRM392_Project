@@ -13,7 +13,7 @@ public class HomeViewModelFactory implements ViewModelProvider.Factory {
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(HomeViewModel.class)) {
-            return (T) new HomeViewModel(BookRepository.getInstance(MainApplication.authApiManager));
+            return (T) new HomeViewModel(BookRepository.getInstance(MainApplication.bookApiManager));
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

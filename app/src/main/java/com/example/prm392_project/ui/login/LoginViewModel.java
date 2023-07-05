@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
+import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.data.LoginRepository;
 import com.example.prm392_project.data.Result;
 import com.example.prm392_project.data.DTO.Auth.Login;
+import com.example.prm392_project.data.model.Book;
 import com.example.prm392_project.data.model.User;
 import com.example.prm392_project.R;
+import com.example.prm392_project.data.remote.BookApiManager;
 import com.example.prm392_project.data.repository.AuthRepository;
 
 import java.io.IOException;
@@ -20,43 +23,23 @@ public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-
-    private Result<User> result;
-
     private AuthRepository authRepository;
     LoginViewModel(AuthRepository loginRepository) {
         this.authRepository = loginRepository;
     }
-
     LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
     }
-
+    public void setLoginResult(LoginResult loginResult) {
+        this.loginResult.setValue(loginResult);
+    }
     LiveData<LoginResult> getLoginResult() {
         return loginResult;
     }
 
-    public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
+    public LiveData<Result<User>> login(String username, String password) {
         Login loginRequest = new Login(username, password);
-        //Result<User> result = loginRepository.login(username, password);
-        authRepository.login(loginRequest).observeForever( resul -> {
-            if (resul instanceof Result.Success) {
-                User data = ((Result.Success<User>) resul).getData();
-                // Login successful
-                result =new Result.Success<>(data);
-            } else {
-                // Login error
-                result = new Result.Error(new IOException("Login failed"));
-            }
-        });
-
-        if (result instanceof Result.Success) {
-            User data = ((Result.Success<User>) result).getData();
-            loginResult.setValue(new LoginResult(data));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+        return authRepository.login(loginRequest);
     }
 
     public void loginDataChanged(String username, String password) {

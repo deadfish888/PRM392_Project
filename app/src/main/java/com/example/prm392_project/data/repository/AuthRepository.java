@@ -28,9 +28,6 @@ public class AuthRepository {
         }
         return instance;
     }
-    LiveData<Result<User>> getResult() {
-        return result;
-    }
     public MutableLiveData<Result<User>> login(Login loginRequest) {
         authApiManager.login(loginRequest, new Callback<User>() {
             @Override

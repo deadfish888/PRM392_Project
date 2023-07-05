@@ -18,16 +18,16 @@ public class HomeViewModel extends ViewModel {
     }
 
     public LiveData<List<Book>> getBooks() {
-        MutableLiveData<List<Book>> books = new MutableLiveData<>();
-        List<Book> list = new ArrayList<>();
-        list.add(new Book(1,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
-        list.add(new Book(2,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
-        list.add(new Book(3,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
-        list.add(new Book(4,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
-        list.add(new Book(5,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
-        list.add(new Book(6,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
-
-        books.setValue(list);
-        return books;
+//        MutableLiveData<List<Book>> books = new MutableLiveData<>();
+//        List<Book> list = new ArrayList<>();
+//        list.add(new Book(1,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
+//        list.add(new Book(2,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
+//        list.add(new Book(3,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
+//        list.add(new Book(4,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
+//        list.add(new Book(5,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
+//        list.add(new Book(6,"Sapiens: A Brief History of Humankind","Yuval", "https://d-pdf.com/electronic-book/3049",5));
+//
+//        books.setValue(list);
+        return bookRepository.getBooks();
     }
 }

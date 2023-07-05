@@ -7,7 +7,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 public class AuthApiManager {
-    private static IApi service;
+    private static IAuthAPI service;
     private static AuthApiManager apiManager;
     private AuthApiManager() {
         service = RetrofitService.Create();

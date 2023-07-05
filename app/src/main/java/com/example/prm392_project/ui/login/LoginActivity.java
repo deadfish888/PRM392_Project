@@ -25,12 +25,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
+import com.example.prm392_project.data.Result;
 import com.example.prm392_project.data.model.User;
+import com.example.prm392_project.data.remote.BookApiManager;
 import com.example.prm392_project.ui.MainActivity;
 import com.example.prm392_project.ui.login.LoginViewModel;
 import com.example.prm392_project.ui.login.LoginViewModelFactory;
 import com.example.prm392_project.databinding.ActivityLoginBinding;
+
+import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -41,11 +46,11 @@ public class LoginActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "shared_prefs";
 
     public static final String USERNAME_KEY = "username_key";
-    public static final String PASSWORD_KEY = "password_key";
+    public static final String TOKEN = "token";
 
     // variable for shared preferences.
     SharedPreferences sharedpreferences;
-    String username, password;
+    String username, token;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
         username = sharedpreferences.getString(USERNAME_KEY, null);
-        password = sharedpreferences.getString(PASSWORD_KEY, null);
+        token = sharedpreferences.getString(TOKEN, null);
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
@@ -94,17 +99,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
-
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-
-                    // below two lines will put values for
-                    // email and password in shared preferences.
-                    editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
-                    editor.putString(PASSWORD_KEY, passwordEditText.getText().toString());
-
-                    // to save our data with key and value.
-                    editor.apply();
-
                     Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(mainActivity);
                     setResult(Activity.RESULT_OK);
@@ -139,7 +133,32 @@ public class LoginActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                            passwordEditText.getText().toString()).observe(LoginActivity.this, resul -> {
+                        Result<User> result;
+                        if (resul instanceof Result.Success) {
+                            User data = ((Result.Success<User>) resul).getData();
+                            // Login successful
+                            result =new Result.Success<>(data);
+
+                            MainApplication.bookApiManager = BookApiManager.getInstance(data.getToken());
+
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
+                            editor.putString(TOKEN, data.getToken());
+
+                            // to save our data with key and value.
+                            editor.apply();
+                        } else {
+                            // Login error
+                            result = new Result.Error(new IOException("Login failed"));
+                        }
+                        if (result instanceof Result.Success) {
+                            User data = ((Result.Success<User>) result).getData();
+                            loginViewModel.setLoginResult(new LoginResult(data));
+                        } else {
+                            loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+                        }
+                    });
                 }
                 return false;
             }
@@ -150,13 +169,37 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                        passwordEditText.getText().toString()).observe(LoginActivity.this, resul -> {
+                            Result<User> result;
+                            if (resul instanceof Result.Success) {
+                                User data = ((Result.Success<User>) resul).getData();
+                                // Login successful
+                                result =new Result.Success<>(data);
+                                MainApplication.bookApiManager = BookApiManager.getInstance(data.getToken());
+
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
+                                editor.putString(TOKEN, data.getToken());
+
+                                // to save our data with key and value.
+                                editor.apply();
+                            } else {
+                                // Login error
+                                result = new Result.Error(new IOException("Login failed"));
+                            }
+                            if (result instanceof Result.Success) {
+                                User data = ((Result.Success<User>) result).getData();
+                                loginViewModel.setLoginResult(new LoginResult(data));
+                            } else {
+                                loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+                            }
+                        });
             }
         });
     }
 
     private void updateUiWithUser(User model) {
-        String welcome = getString(R.string.welcome) + model.getUsername();
+        String welcome = getString(R.string.welcome) + " "+ model.getUsername();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
@@ -168,7 +211,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (username != null && password != null) {
+        if (username != null && token != null) {
+            MainApplication.bookApiManager = BookApiManager.getInstance(token);
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
         }
