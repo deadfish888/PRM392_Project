@@ -78,6 +78,9 @@ public class BookInfoFragment extends Fragment {
             commentAdapter.setItems(cmts);
             progress.hide();
         });
+        bookInfoViewModel.getCategoryById(bookInfo.getCategoryId()).observe(getViewLifecycleOwner(), cate -> {
+            txtCategory.setText(cate.getName());
+        });
         return root;
     }
 
