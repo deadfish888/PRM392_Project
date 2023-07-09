@@ -31,11 +31,11 @@ import com.example.prm392_project.data.Result;
 import com.example.prm392_project.data.model.User;
 import com.example.prm392_project.data.remote.BookApiManager;
 import com.example.prm392_project.ui.MainActivity;
-import com.example.prm392_project.ui.login.LoginViewModel;
-import com.example.prm392_project.ui.login.LoginViewModelFactory;
 import com.example.prm392_project.databinding.ActivityLoginBinding;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String USERNAME_KEY = "username_key";
     public static final String TOKEN = "token";
+    public static final String TIME = "time";
 
     // variable for shared preferences.
     SharedPreferences sharedpreferences;
@@ -145,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
                             editor.putString(TOKEN, data.getToken());
+                            editor.putLong(TIME, new Date().getTime());
 
                             // to save our data with key and value.
                             editor.apply();
@@ -180,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sharedpreferences.edit();
                                 editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
                                 editor.putString(TOKEN, data.getToken());
-
+                                editor.putLong(TIME, new Date().getTime());
                                 // to save our data with key and value.
                                 editor.apply();
                             } else {
@@ -212,6 +214,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (username != null && token != null) {
+            Date setTime = new Date(sharedpreferences.getLong(TIME,0));
+            Date now = new Date();
+            long diff = setTime.getTime() - now.getTime();
+
+            if (TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS) > 180) return;
+            
             MainApplication.bookApiManager = BookApiManager.getInstance(token);
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);

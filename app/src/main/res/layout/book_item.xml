@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/book_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="14dp"
             android:text="Title"
@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/book_author"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="14dp"
             android:text="Author"
@@ -39,6 +39,10 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textSize="16sp"
             android:textStyle="italic"
+            cardView:layout_constraintBottom_toBottomOf="parent"
+            cardView:layout_constraintEnd_toEndOf="parent"
+            cardView:layout_constraintHorizontal_bias="0.5"
+            cardView:layout_constraintStart_toStartOf="parent"
             cardView:layout_constraintTop_toBottomOf="@+id/book_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,16 +1,15 @@
 package com.example.prm392_project.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,11 +31,15 @@ public class HomeFragment extends Fragment {
         ContentLoadingProgressBar progress = root.findViewById(R.id.progress);
         RecyclerView booksRecyclerView = root.findViewById(R.id.book_recycler_view);
         OnItemClickListener onBookClickListener = (view, book) -> {
-//            Intent intent = new Intent(getActivity(), BlogsActivity.class);
-//            String categoryJson = new Gson().toJson(book);
-//            intent.putExtra("Category", categoryJson);
+            String bookJson = new Gson().toJson(book);
+            Bundle args = new Bundle();
+            args.putString("bookInfo", bookJson);
+            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_bookInfoFragment, args);
+//                Intent intent = new Intent(getActivity(), BookInfoActivity.class);
+//            intent.putExtra("BookInfo", bookJson);
 //            intent.putExtra("CallerActivity", getActivity().getClass().getSimpleName());
 //            startActivity(intent);
+
         };
         booksAdapter = new BooksAdapter(root.getContext(), onBookClickListener);
         booksRecyclerView.setAdapter(booksAdapter);

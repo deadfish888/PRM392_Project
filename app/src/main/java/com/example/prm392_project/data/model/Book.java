@@ -1,14 +1,14 @@
 package com.example.prm392_project.data.model;
 
 public class Book {
-    private int Id;
+    private int id;
     private String title;
     private String author;
     private String content;
     private int categoryId;
 
     public Book(int id, String title, String author, String content, int categoryId) {
-        Id = id;
+        this.id = id;
         this.title = title;
         this.author = author;
         this.content = content;
@@ -16,11 +16,11 @@ public class Book {
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getTitle() {
