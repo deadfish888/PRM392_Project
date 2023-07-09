@@ -2,22 +2,15 @@ package com.example.prm392_project.ui.login;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
-import com.example.prm392_project.MainApplication;
-import com.example.prm392_project.data.LoginRepository;
 import com.example.prm392_project.data.Result;
 import com.example.prm392_project.data.DTO.Auth.Login;
-import com.example.prm392_project.data.model.Book;
-import com.example.prm392_project.data.model.User;
+import com.example.prm392_project.data.model.UserLoggedIn;
 import com.example.prm392_project.R;
-import com.example.prm392_project.data.remote.BookApiManager;
 import com.example.prm392_project.data.repository.AuthRepository;
-
-import java.io.IOException;
 
 public class LoginViewModel extends ViewModel {
 
@@ -37,7 +30,7 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public LiveData<Result<User>> login(String username, String password) {
+    public LiveData<Result<UserLoggedIn>> login(String username, String password) {
         Login loginRequest = new Login(username, password);
         return authRepository.login(loginRequest);
     }

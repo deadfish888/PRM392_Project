@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/bookInfoFragment"
         android:name="com.example.prm392_project.ui.book.info.BookInfoFragment"
-        android:label="fragment_book_info"
+        android:label="Book Info"
         tools:layout="@layout/fragment_book_info" >
         <action
             android:id="@+id/action_bookInfoFragment_to_nav_home"

@@ -28,8 +28,7 @@ import android.widget.Toast;
 import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
 import com.example.prm392_project.data.Result;
-import com.example.prm392_project.data.model.User;
-import com.example.prm392_project.data.remote.BookApiManager;
+import com.example.prm392_project.data.model.UserLoggedIn;
 import com.example.prm392_project.ui.MainActivity;
 import com.example.prm392_project.databinding.ActivityLoginBinding;
 
@@ -135,14 +134,13 @@ public class LoginActivity extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     loginViewModel.login(usernameEditText.getText().toString(),
                             passwordEditText.getText().toString()).observe(LoginActivity.this, resul -> {
-                        Result<User> result;
+                        Result<UserLoggedIn> result;
                         if (resul instanceof Result.Success) {
-                            User data = ((Result.Success<User>) resul).getData();
+                            UserLoggedIn data = ((Result.Success<UserLoggedIn>) resul).getData();
                             // Login successful
                             result =new Result.Success<>(data);
-
-                            MainApplication.bookApiManager = BookApiManager.getInstance(data.getToken());
-
+                            MainApplication.TOKEN = data.getToken();
+                            MainApplication.setUpManager();
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
                             editor.putString(TOKEN, data.getToken());
@@ -155,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                             result = new Result.Error(new IOException("Login failed"));
                         }
                         if (result instanceof Result.Success) {
-                            User data = ((Result.Success<User>) result).getData();
+                            UserLoggedIn data = ((Result.Success<UserLoggedIn>) result).getData();
                             loginViewModel.setLoginResult(new LoginResult(data));
                         } else {
                             loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
@@ -172,13 +170,13 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString()).observe(LoginActivity.this, resul -> {
-                            Result<User> result;
+                            Result<UserLoggedIn> result;
                             if (resul instanceof Result.Success) {
-                                User data = ((Result.Success<User>) resul).getData();
+                                UserLoggedIn data = ((Result.Success<UserLoggedIn>) resul).getData();
                                 // Login successful
                                 result =new Result.Success<>(data);
-                                MainApplication.bookApiManager = BookApiManager.getInstance(data.getToken());
-
+                                MainApplication.TOKEN = data.getToken();
+                                MainApplication.setUpManager();
                                 SharedPreferences.Editor editor = sharedpreferences.edit();
                                 editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
                                 editor.putString(TOKEN, data.getToken());
@@ -190,7 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                                 result = new Result.Error(new IOException("Login failed"));
                             }
                             if (result instanceof Result.Success) {
-                                User data = ((Result.Success<User>) result).getData();
+                                UserLoggedIn data = ((Result.Success<UserLoggedIn>) result).getData();
                                 loginViewModel.setLoginResult(new LoginResult(data));
                             } else {
                                 loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
@@ -200,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(User model) {
+    private void updateUiWithUser(UserLoggedIn model) {
         String welcome = getString(R.string.welcome) + " "+ model.getUsername();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
@@ -219,8 +217,8 @@ public class LoginActivity extends AppCompatActivity {
             long diff = setTime.getTime() - now.getTime();
 
             if (TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS) > 180) return;
-            
-            MainApplication.bookApiManager = BookApiManager.getInstance(token);
+            MainApplication.TOKEN = token;
+            MainApplication.setUpManager();
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
         }

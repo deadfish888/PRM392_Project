@@ -35,10 +35,7 @@ public class HomeFragment extends Fragment {
             Bundle args = new Bundle();
             args.putString("bookInfo", bookJson);
             NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_bookInfoFragment, args);
-//                Intent intent = new Intent(getActivity(), BookInfoActivity.class);
-//            intent.putExtra("BookInfo", bookJson);
 //            intent.putExtra("CallerActivity", getActivity().getClass().getSimpleName());
-//            startActivity(intent);
 
         };
         booksAdapter = new BooksAdapter(root.getContext(), onBookClickListener);

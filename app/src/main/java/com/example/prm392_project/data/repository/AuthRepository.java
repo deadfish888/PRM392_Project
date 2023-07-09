@@ -1,11 +1,10 @@
 package com.example.prm392_project.data.repository;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.prm392_project.data.DTO.Auth.Login;
 import com.example.prm392_project.data.Result;
-import com.example.prm392_project.data.model.User;
+import com.example.prm392_project.data.model.UserLoggedIn;
 import com.example.prm392_project.data.remote.AuthApiManager;
 
 import java.io.IOException;
@@ -17,7 +16,7 @@ import retrofit2.Response;
 public class AuthRepository {
     private static volatile AuthRepository instance;
     private final AuthApiManager authApiManager;
-    private final MutableLiveData<Result<User>> result = new MutableLiveData<>();
+    private final MutableLiveData<Result<UserLoggedIn>> result = new MutableLiveData<>();
     private AuthRepository(AuthApiManager authApiManager) {
         this.authApiManager = authApiManager;
     }
@@ -28,12 +27,12 @@ public class AuthRepository {
         }
         return instance;
     }
-    public MutableLiveData<Result<User>> login(Login loginRequest) {
-        authApiManager.login(loginRequest, new Callback<User>() {
+    public MutableLiveData<Result<UserLoggedIn>> login(Login loginRequest) {
+        authApiManager.login(loginRequest, new Callback<UserLoggedIn>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<UserLoggedIn> call, Response<UserLoggedIn> response) {
                 if (response.isSuccessful()) {
-                    User u = response.body();
+                    UserLoggedIn u = response.body();
                     result.setValue(new Result.Success<>(u));
                 } else {
                     result.setValue(new Result.Error(new IOException("Login failed")));
@@ -41,7 +40,7 @@ public class AuthRepository {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserLoggedIn> call, Throwable t) {
                 result.setValue(new Result.Error(new IOException("Error logging in", t)));
             }
         });

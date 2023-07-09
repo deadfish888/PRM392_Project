@@ -1,7 +1,7 @@
 package com.example.prm392_project.data.remote;
 
 import com.example.prm392_project.data.DTO.Auth.Login;
-import com.example.prm392_project.data.model.User;
+import com.example.prm392_project.data.model.UserLoggedIn;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,8 +19,8 @@ public class AuthApiManager {
         return apiManager;
     }
 
-    public void login(Login loginRequest, Callback<User> callback){
-        Call<User> userCall = service.login(loginRequest);
+    public void login(Login loginRequest, Callback<UserLoggedIn> callback){
+        Call<UserLoggedIn> userCall = service.login(loginRequest);
         userCall.enqueue(callback);
     }
 }

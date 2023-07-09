@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
 import com.example.prm392_project.MainApplication;
-import com.example.prm392_project.data.LoginDataSource;
-import com.example.prm392_project.data.LoginRepository;
 import com.example.prm392_project.data.repository.AuthRepository;
 
 /**

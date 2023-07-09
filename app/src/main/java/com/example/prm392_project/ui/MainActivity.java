@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
+import com.example.prm392_project.data.remote.BookApiManager;
 import com.example.prm392_project.ui.login.LoginActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -27,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     public static final String SHARED_PREFS = "shared_prefs";
     public static final String USERNAME_KEY = "username_key";
-    public static final String PASSWORD_KEY = "password_key";
+    public static final String TOKEN = "token";
     SharedPreferences sharedpreferences;
-    String username;
+    String username, token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // initializing our shared preferences.
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         username = sharedpreferences.getString(USERNAME_KEY, null);
+        token = sharedpreferences.getString(TOKEN, null);
 
         setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {

@@ -3,7 +3,7 @@ package com.example.prm392_project.data.model;
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
-public class User {
+public class UserLoggedIn {
 
     private String username;
     private String phone;
@@ -11,11 +11,11 @@ public class User {
     private String token ;
     private String role;
 
-    public User(String username) {
+    public UserLoggedIn(String username) {
         this.username = username;
     }
 
-    public User(String username, String phone, String credentialCode, String token, String role) {
+    public UserLoggedIn(String username, String phone, String credentialCode, String token, String role) {
         this.username = username;
         this.phone = phone;
         this.credentialCode = credentialCode;
