@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "shared_prefs";
     public static final String USERNAME_KEY = "username_key";
     public static final String TOKEN = "token";
-    SharedPreferences sharedpreferences;
-    String username, token;
+    public static SharedPreferences sharedpreferences;
+    public static String username, token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
         token = sharedpreferences.getString(TOKEN, null);
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
 

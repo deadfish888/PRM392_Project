@@ -21,6 +21,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @NonNull
     private final Context context;
     private List<Comment> items = new ArrayList();
+    public int numPage =1;
     private final OnItemClickListener onItemClickListener;
     public CommentAdapter(@NonNull Context context, OnItemClickListener itemClickListener) {
         this.context = context;
@@ -37,11 +38,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
     @Override
     public int getItemCount() {
-        return items == null ? 0 : items.size();
+        return items == null ? 0 : (Math.min(numPage * 10, items.size())) ;
     }
-    public void setItems(List items) {
+    public void setItems(List<Comment> items) {
         this.items = items;
-        this.notifyDataSetChanged();
+        notifyDataSetChanged();
+    }
+    public void addItem(Comment cmt){
+        this.items.add(0,cmt);
+        notifyDataSetChanged();
     }
     class CommentViewHolder extends RecyclerView.ViewHolder {
         private final TextView comment_content;

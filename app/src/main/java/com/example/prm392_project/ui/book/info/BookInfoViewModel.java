@@ -3,6 +3,7 @@ package com.example.prm392_project.ui.book.info;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.prm392_project.data.DTO.Comment.CommentCreateDTO;
 import com.example.prm392_project.data.model.Category;
 import com.example.prm392_project.data.model.Comment;
 import com.example.prm392_project.data.repository.CategoryRepository;
@@ -26,5 +27,8 @@ public class BookInfoViewModel extends ViewModel {
     }
     public LiveData<Category> getCategoryById(int id){
         return categoryRepository.getCategoryById(id);
+    }
+    public LiveData<Comment> postComment(CommentCreateDTO cmt){
+        return commentRepository.postComment(cmt);
     }
 }

@@ -1,8 +1,12 @@
 package com.example.prm392_project.ui.book.info;
 
 import androidx.core.widget.ContentLoadingProgressBar;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,12 +19,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.prm392_project.R;
+import com.example.prm392_project.data.DTO.Comment.CommentCreateDTO;
 import com.example.prm392_project.data.model.Book;
+import com.example.prm392_project.data.model.Comment;
 import com.example.prm392_project.data.repository.CommentRepository;
 import com.example.prm392_project.databinding.FragmentBookInfoBinding;
+import com.example.prm392_project.ui.MainActivity;
 import com.example.prm392_project.ui.common.OnItemClickListener;
 import com.example.prm392_project.ui.home.HomeViewModelFactory;
 import com.google.gson.Gson;
@@ -35,7 +45,9 @@ public class BookInfoFragment extends Fragment {
     private TextView txtAuthor;
     private TextView txtCategory;
     private TextView txtDes;
-
+    private EditText edtComment;
+    private Button btnPostComment;
+    private Observer<Comment> postCommentObserver;
     public static BookInfoFragment newInstance() {
         return new BookInfoFragment();
     }
@@ -57,6 +69,8 @@ public class BookInfoFragment extends Fragment {
         txtAuthor = root.findViewById(R.id.txtAuthor);
         txtCategory = root.findViewById(R.id.txtCategory);
         txtDes = root.findViewById(R.id.txtContent);
+        edtComment = root.findViewById(R.id.edtComment);
+        btnPostComment = root.findViewById(R.id.btnPostComment);
 
         Bundle args = getArguments();
         if (args != null) {
@@ -73,14 +87,36 @@ public class BookInfoFragment extends Fragment {
         recyclerView.setAdapter(commentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         progress.show();
-        bookInfoViewModel.getAllComments(bookInfo.getId()).observe(getViewLifecycleOwner(), cmts -> {
+        LifecycleOwner owner = getViewLifecycleOwner();
+        bookInfoViewModel.getAllComments(bookInfo.getId()).observe(owner, cmts -> {
             Collections.reverse(cmts);
             commentAdapter.setItems(cmts);
             progress.hide();
         });
-        bookInfoViewModel.getCategoryById(bookInfo.getCategoryId()).observe(getViewLifecycleOwner(), cate -> {
+
+        bookInfoViewModel.getCategoryById(bookInfo.getCategoryId()).observe(owner, cate -> {
             txtCategory.setText(cate.getName());
         });
+
+        postCommentObserver = comment -> {
+            if (comment != null) {
+                commentAdapter.addItem(comment);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView
+                        .getLayoutManager();
+                layoutManager.scrollToPositionWithOffset(0, 0);
+            }
+        };
+        btnPostComment.setOnClickListener(v -> {
+
+            if (!edtComment.getText().toString().isEmpty()){
+                hideSoftKeyboard(getActivity(), v);
+                CommentCreateDTO cmt = new CommentCreateDTO(edtComment.getText().toString(), bookInfo.getId(), MainActivity.username);
+                edtComment.setText("");
+                //bookInfoViewModel.postComment(cmt).removeObservers(owner);
+                bookInfoViewModel.postComment(cmt).observe(owner, postCommentObserver);
+            }
+        });
+
         return root;
     }
 
@@ -88,5 +124,11 @@ public class BookInfoFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public void hideSoftKeyboard (Activity activity, View view)
+    {
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

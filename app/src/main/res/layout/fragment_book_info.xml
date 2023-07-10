@@ -56,6 +56,32 @@
             android:background="@android:color/darker_gray"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minLines="2"
+                android:layout_weight="10"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Enter your comment here"
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:id="@+id/btnPostComment"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Post" />
+        </LinearLayout>
+
+
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/info_progress"
             style="?android:attr/progressBarStyleLarge"
