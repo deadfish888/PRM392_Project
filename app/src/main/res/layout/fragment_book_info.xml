@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:layout_marginLeft="20dp"
             android:text="Book Title"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold" />
@@ -26,6 +27,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="8dp"
+            android:layout_marginLeft="20dp"
             android:text="Author"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textSize="18sp"
@@ -37,19 +39,27 @@
             android:layout_height="wrap_content"
             android:text="Category"
             android:padding="8dp"
+            android:layout_marginLeft="20dp"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/txtContent"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnViewPDF"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:padding="8dp"
-            android:singleLine="true"
-            android:text="This is a Sample Book description with one line only displayed"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:textSize="20sp" />
+            android:layout_marginLeft="20dp"
+            android:text="View PDF" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtContent"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="2"-->
+<!--            android:padding="8dp"-->
+<!--            android:singleLine="true"-->
+<!--            android:text="This is a Sample Book description with one line only displayed"-->
+<!--            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"-->
+<!--            android:textSize="20sp" />-->
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
@@ -60,6 +70,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/activity_horizontal_margin"
             android:orientation="horizontal">
 
             <EditText
@@ -95,6 +106,7 @@
             android:id="@+id/comment_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical"
+            android:paddingHorizontal="@dimen/activity_horizontal_margin"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

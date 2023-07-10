@@ -1,5 +1,6 @@
 package com.example.prm392_project.ui.book.info;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -44,7 +46,8 @@ public class BookInfoFragment extends Fragment {
     private TextView txtBookTitle;
     private TextView txtAuthor;
     private TextView txtCategory;
-    private TextView txtDes;
+    //private TextView txtDes;
+    private Button btnViewPDF;
     private EditText edtComment;
     private Button btnPostComment;
     private Observer<Comment> postCommentObserver;
@@ -68,7 +71,8 @@ public class BookInfoFragment extends Fragment {
         txtBookTitle = root.findViewById(R.id.txtBookTitle);
         txtAuthor = root.findViewById(R.id.txtAuthor);
         txtCategory = root.findViewById(R.id.txtCategory);
-        txtDes = root.findViewById(R.id.txtContent);
+        //txtDes = root.findViewById(R.id.txtContent);
+        btnViewPDF = root.findViewById(R.id.btnViewPDF);
         edtComment = root.findViewById(R.id.edtComment);
         btnPostComment = root.findViewById(R.id.btnPostComment);
 
@@ -77,16 +81,23 @@ public class BookInfoFragment extends Fragment {
             String data = args.getString("bookInfo");
             bookInfo = new Gson().fromJson(data, Book.class);
         }
-        getActivity().setTitle(bookInfo.getTitle());
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(bookInfo.getTitle());
 
         txtBookTitle.setText(bookInfo.getTitle());
         txtAuthor.setText(bookInfo.getAuthor());
-        txtDes.setText(bookInfo.getContent());
+        //txtDes.setText(bookInfo.getContent());
+        btnViewPDF.setOnClickListener(v -> {
+            Intent webIntent = new Intent(getContext(),PDFViewActivity.class);
+            webIntent.putExtra("pdf_url", bookInfo.getContent());
+            webIntent.putExtra("book_title", bookInfo.getTitle());
+            startActivity(webIntent);
+        });
 
         commentAdapter = new CommentAdapter(root.getContext(), onItemClickListener);
         recyclerView.setAdapter(commentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         progress.show();
+
         LifecycleOwner owner = getViewLifecycleOwner();
         bookInfoViewModel.getAllComments(bookInfo.getId()).observe(owner, cmts -> {
             Collections.reverse(cmts);
@@ -99,22 +110,24 @@ public class BookInfoFragment extends Fragment {
         });
 
         postCommentObserver = comment -> {
-            if (comment != null) {
-                commentAdapter.addItem(comment);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView
-                        .getLayoutManager();
-                layoutManager.scrollToPositionWithOffset(0, 0);
+            if (comment == null) {
+                return;
             }
+            commentAdapter.addItem(comment);
+            LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView
+                    .getLayoutManager();
+            layoutManager.scrollToPositionWithOffset(0, 0);
         };
-        btnPostComment.setOnClickListener(v -> {
 
-            if (!edtComment.getText().toString().isEmpty()){
-                hideSoftKeyboard(getActivity(), v);
-                CommentCreateDTO cmt = new CommentCreateDTO(edtComment.getText().toString(), bookInfo.getId(), MainActivity.username);
-                edtComment.setText("");
-                //bookInfoViewModel.postComment(cmt).removeObservers(owner);
-                bookInfoViewModel.postComment(cmt).observe(owner, postCommentObserver);
+        btnPostComment.setOnClickListener(v -> {
+            if (edtComment.getText().toString().trim().isEmpty()){
+                return;
             }
+            hideSoftKeyboard(getActivity(), v);
+            CommentCreateDTO cmt = new CommentCreateDTO(edtComment.getText().toString(), bookInfo.getId(), MainActivity.username);
+            edtComment.setText("");
+            //bookInfoViewModel.postComment(cmt).removeObservers(owner);
+            bookInfoViewModel.postComment(cmt).observe(owner, postCommentObserver);
         });
 
         return root;

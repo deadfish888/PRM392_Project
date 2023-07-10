@@ -139,8 +139,10 @@ public class LoginActivity extends AppCompatActivity {
                             UserLoggedIn data = ((Result.Success<UserLoggedIn>) resul).getData();
                             // Login successful
                             result =new Result.Success<>(data);
+
                             MainApplication.TOKEN = data.getToken();
                             MainApplication.setUpManager();
+
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
                             editor.putString(TOKEN, data.getToken());
@@ -175,8 +177,10 @@ public class LoginActivity extends AppCompatActivity {
                                 UserLoggedIn data = ((Result.Success<UserLoggedIn>) resul).getData();
                                 // Login successful
                                 result =new Result.Success<>(data);
+
                                 MainApplication.TOKEN = data.getToken();
                                 MainApplication.setUpManager();
+
                                 SharedPreferences.Editor editor = sharedpreferences.edit();
                                 editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
                                 editor.putString(TOKEN, data.getToken());
@@ -214,9 +218,11 @@ public class LoginActivity extends AppCompatActivity {
         if (username != null && token != null) {
             Date setTime = new Date(sharedpreferences.getLong(TIME,0));
             Date now = new Date();
-            long diff = setTime.getTime() - now.getTime();
+            long diff = TimeUnit.MINUTES.convert(now.getTime() - setTime.getTime(), TimeUnit.MILLISECONDS);
 
-            if (TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS) > 180) return;
+            if ( diff> 180) {
+                return;
+            }
             MainApplication.TOKEN = token;
             MainApplication.setUpManager();
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
