@@ -18,10 +18,7 @@ import com.example.prm392_project.databinding.FragmentCategoryBinding;
 import com.example.prm392_project.ui.common.OnItemClickListener;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A fragment representing a list of Items.
@@ -47,9 +44,15 @@ public class CategoryFragment extends Fragment {
             int[] bookNumbers = new int[categories.size()];
             Arrays.fill(bookNumbers, 0);
             categoryViewModel.getAllBooks().observe(getViewLifecycleOwner(), books -> {
-                for (Book book: books
-                ) {
-                    bookNumbers[book.getCategoryId()]++;
+                if (!progress.isShown()) return;
+                for (int i = 0; i < categories.size(); i++) {
+                    Category category = categories.get(i);
+                    int categoryId = category.getId();
+                    for (Book book : books) {
+                        if (book.getCategoryId() == categoryId) {
+                            bookNumbers[i]++;
+                        }
+                    }
                 }
                 categoriesAdapter.setCategories(categories, bookNumbers);
                 progress.hide();
