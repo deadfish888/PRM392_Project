@@ -48,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     public static final String TOKEN = "token";
     public static final String TIME = "time";
 
+    public static final String Role = "user";
+
     // variable for shared preferences.
     SharedPreferences sharedpreferences;
     String username, token;
@@ -185,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
                                 editor.putString(TOKEN, data.getToken());
                                 editor.putLong(TIME, new Date().getTime());
+                                editor.putString(Role,data.getRole());
                                 // to save our data with key and value.
                                 editor.apply();
                             } else {

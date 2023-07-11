@@ -24,5 +24,8 @@
             android:id="@+id/nav_logout"
             android:icon="@android:drawable/ic_lock_power_off"
             android:title="@string/logout" />
+        <item
+            android:id="@+id/nav_admin"
+            android:title="Admin" />
     </group>
 </menu>
