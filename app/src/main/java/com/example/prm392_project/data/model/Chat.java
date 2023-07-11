@@ -3,15 +3,15 @@ package com.example.prm392_project.data.model;
 import java.sql.Timestamp;
 
 public class Chat {
-    private int Id;
+    private int id;
     private Timestamp time;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public Timestamp getTime() {
@@ -23,7 +23,7 @@ public class Chat {
     }
 
     public Chat(int id, Timestamp time) {
-        Id = id;
+        this.id = id;
         this.time = time;
     }
 }

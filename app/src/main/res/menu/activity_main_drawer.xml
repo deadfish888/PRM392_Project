@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/nav_category"
+            android:icon="@android:drawable/ic_input_get"
+            android:title="Category" />
+        <item
             android:id="@+id/nav_chat"
             android:icon="@android:drawable/sym_action_chat"
             android:title="@string/menu_chat" />

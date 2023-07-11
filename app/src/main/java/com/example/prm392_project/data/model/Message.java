@@ -1,17 +1,17 @@
 package com.example.prm392_project.data.model;
 
 public class Message {
-    private int Id;
+    private int id;
     private int userId;
     private int chatId;
     private String content;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public int getUserId() {
@@ -39,7 +39,7 @@ public class Message {
     }
 
     public Message(int id, int userId, int chatId, String content) {
-        Id = id;
+        this.id = id;
         this.userId = userId;
         this.chatId = chatId;
         this.content = content;
