@@ -4,16 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
 import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
-import com.example.prm392_project.data.remote.BookApiManager;
+
 import com.example.prm392_project.ui.login.LoginActivity;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -30,40 +31,69 @@ public class MainActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "shared_prefs";
     public static final String USERNAME_KEY = "username_key";
     public static final String TOKEN = "token";
+    public static final String Role = "User";
     public static SharedPreferences sharedpreferences;
-    public static String username, token;
+    public static String username, token,role;
+
+    private NavigationView mainNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        this.SetupData();
+        setSupportActionBar(binding.appBarMain.toolbar);
+        this.SetupNavBar();
+        this.SetupClickEventButton();
+    }
+
+    private void SetupData(){
         // initializing our shared preferences.
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         username = sharedpreferences.getString(USERNAME_KEY, null);
         token = sharedpreferences.getString(TOKEN, null);
+        role = sharedpreferences.getString(Role,null);
+    }
 
-        setSupportActionBar(binding.appBarMain.toolbar);
-//        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+    private void SetupClickEventButton(){
+        Menu navigationMenu = this.mainNavigationView.getMenu();
+        navigationMenu.findItem(R.id.nav_logout).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                OnClickLogout();
+                return false;
+            }
+        });
+    }
+
+
+
+    private void OnClickLogout(){
+        sharedpreferences.edit().clear();
+        sharedpreferences.edit().apply();
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+    }
+
+
+
+    private void SetupNavBar(){
+        //setup fragment for nav
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_chat, R.id.nav_account)
+                R.id.nav_home, R.id.nav_chat, R.id.nav_account,R.id.nav_admin)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        this.mainNavigationView = navigationView;
+
+        //check user is admin ?
+        Menu navigationMenu = navigationView.getMenu();
+        navigationMenu.findItem(R.id.nav_admin).setVisible(role=="Admin");
     }
 
     @Override
