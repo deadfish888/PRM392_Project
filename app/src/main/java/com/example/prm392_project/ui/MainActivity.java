@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "shared_prefs";
     public static final String USERNAME_KEY = "username_key";
     public static final String TOKEN = "token";
-    public static final String Role = "User";
+    public static final String Role = "user";
     public static SharedPreferences sharedpreferences;
     public static String username, token,role;
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
                 OnClickLogout();
-                return false;
+                return true;
             }
         });
     }
@@ -70,8 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void OnClickLogout(){
-        sharedpreferences.edit().clear();
-        sharedpreferences.edit().apply();
+        sharedpreferences.edit().clear().commit();
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
     }
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         //check user is admin ?
         Menu navigationMenu = navigationView.getMenu();
-        navigationMenu.findItem(R.id.nav_admin).setVisible(role=="Admin");
+        navigationMenu.findItem(R.id.nav_admin).setVisible(role.equals("Admin"));
     }
 
     @Override
