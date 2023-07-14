@@ -54,7 +54,7 @@ public class BookApiManager {
         bookCall.enqueue(callback);
     }
 
-    public void SearchBooks(String author, String title, int categoryId, Callback<List<Book>> callback){
+    public void SearchBooks(String author, String title, Integer categoryId, Callback<List<Book>> callback){
         Call<List<Book>> booksCall = service.SearchBooks(author, title, categoryId);
         booksCall.enqueue(callback);
     }

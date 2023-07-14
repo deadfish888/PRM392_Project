@@ -18,4 +18,13 @@ public class HomeViewModel extends ViewModel {
     public LiveData<List<Book>> getBooks() {
         return bookRepository.getAllBooks();
     }
-}
+    public LiveData<List<Book>> searchBooks(String title, int categoryId){
+        if (categoryId != 0){
+            return bookRepository.searchBooks(null, null, categoryId);
+        }
+        if(title!=null){
+            return bookRepository.searchBooks(null,title, null );
+        }
+        return bookRepository.getAllBooks();
+    }
+ }

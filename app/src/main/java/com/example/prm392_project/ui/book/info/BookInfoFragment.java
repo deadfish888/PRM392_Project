@@ -84,7 +84,7 @@ public class BookInfoFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(bookInfo.getTitle());
 
         txtBookTitle.setText(bookInfo.getTitle());
-        txtAuthor.setText(bookInfo.getAuthor());
+        txtAuthor.setText("Author: "+bookInfo.getAuthor());
         //txtDes.setText(bookInfo.getContent());
         btnViewPDF.setOnClickListener(v -> {
             Intent webIntent = new Intent(getContext(),PDFViewActivity.class);
