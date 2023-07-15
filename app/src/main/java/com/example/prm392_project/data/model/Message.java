@@ -1,33 +1,22 @@
 package com.example.prm392_project.data.model;
 
 public class Message {
-    private int id;
-    private int userId;
-    private int chatId;
-    private String content;
+    String sender_name;
+    String content;
+    String receiver_name;
 
-    public int getId() {
-        return id;
+    public Message(String sender_name, String content, String receiver_name) {
+        this.sender_name = sender_name;
+        this.content = content;
+        this.receiver_name = receiver_name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getSender_name() {
+        return sender_name;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(int chatId) {
-        this.chatId = chatId;
+    public void setSender_name(String sender_name) {
+        this.sender_name = sender_name;
     }
 
     public String getContent() {
@@ -38,10 +27,11 @@ public class Message {
         this.content = content;
     }
 
-    public Message(int id, int userId, int chatId, String content) {
-        this.id = id;
-        this.userId = userId;
-        this.chatId = chatId;
-        this.content = content;
+    public String getReceiver_name() {
+        return receiver_name;
+    }
+
+    public void setReceiver_name(String receiver_name) {
+        this.receiver_name = receiver_name;
     }
 }

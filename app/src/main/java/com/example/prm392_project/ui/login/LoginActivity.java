@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // creating constant keys for shared preferences.
     public static final String SHARED_PREFS = "shared_prefs";
-
     public static final String USERNAME_KEY = "username_key";
     public static final String TOKEN = "token";
     public static final String TIME = "time";

@@ -3,27 +3,47 @@ package com.example.prm392_project.data.model;
 import java.sql.Timestamp;
 
 public class Chat {
-    private int id;
-    private Timestamp time;
+    String partner_username;
+    int partner_id;
+    String lastMessage;
+    int chatID;
 
-    public int getId() {
-        return id;
+    public Chat(String partner_username, int partner_id, String lastMessage, int chatID) {
+        this.partner_username = partner_username;
+        this.partner_id = partner_id;
+        this.lastMessage = lastMessage;
+        this.chatID = chatID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getPartner_username() {
+        return partner_username;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public void setPartner_username(String partner_username) {
+        this.partner_username = partner_username;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public int getPartner_id() {
+        return partner_id;
     }
 
-    public Chat(int id, Timestamp time) {
-        this.id = id;
-        this.time = time;
+    public void setPartner_id(int partner_id) {
+        this.partner_id = partner_id;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    public int getChatID() {
+        return chatID;
+    }
+
+    public void setChatID(int chatID) {
+        this.chatID = chatID;
     }
 }

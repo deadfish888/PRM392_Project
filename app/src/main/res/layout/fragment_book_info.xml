@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".ui.book.info.BookInfoFragment">
     <LinearLayout
         android:id="@+id/book_info_layout"
@@ -15,8 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:layout_marginLeft="20dp"
-            android:text="Book Title"
+            android:layout_gravity="end"
+            android:layout_marginStart="20dp"
+            android:text="@string/book_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold" />
 
@@ -27,8 +28,8 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="8dp"
-            android:layout_marginLeft="20dp"
-            android:text="Author"
+            android:layout_marginStart="20dp"
+            android:text="@string/book_author"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textSize="18sp"
             android:textStyle="italic" />
@@ -37,17 +38,17 @@
             android:id="@+id/txtCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Category"
+            android:text="@string/book_category"
             android:padding="8dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnViewPDF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="View PDF" />
+            android:layout_marginStart="20dp"
+            android:text="@string/view_pdf" />
 
 <!--        <TextView-->
 <!--            android:id="@+id/txtContent"-->
@@ -81,7 +82,7 @@
                 android:layout_weight="10"
                 android:ems="10"
                 android:gravity="start|top"
-                android:hint="Enter your comment here"
+                android:hint="@string/input_comment"
                 android:inputType="textMultiLine" />
 
             <Button
@@ -89,7 +90,7 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Post" />
+                android:text="@string/post" />
         </LinearLayout>
 
 
@@ -105,8 +106,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/comment_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:scrollbars="vertical"
-            android:paddingHorizontal="@dimen/activity_horizontal_margin"/>
+            android:paddingHorizontal="@dimen/activity_horizontal_margin"
+            tools:listitem="@layout/comment_item"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
