@@ -3,7 +3,6 @@ package com.example.prm392_project.data.remote;
 import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.data.DTO.Auth.Login;
 import com.example.prm392_project.data.DTO.Auth.RegisterDTO;
-import com.example.prm392_project.data.model.UserInfo;
 import com.example.prm392_project.data.model.UserLoggedIn;
 
 import java.io.IOException;

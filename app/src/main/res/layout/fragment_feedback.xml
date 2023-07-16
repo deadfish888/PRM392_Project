@@ -8,6 +8,14 @@
     tools:context=".ui.chat.FeedbackFragment"
     android:orientation="vertical">
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/feedback_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/purple_700"
+        android:visibility="visible" />
     <!-- RecyclerView to display chat messages -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
@@ -27,7 +35,7 @@
 
         <!-- EditText for typing the message -->
         <EditText
-            android:id="@+id/messageEditText"
+            android:id="@+id/edtMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,7 +46,7 @@
 
         <!-- Button to send the message -->
         <Button
-            android:id="@+id/sendButton"
+            android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send" />

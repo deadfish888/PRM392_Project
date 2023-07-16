@@ -55,11 +55,9 @@ public class BookInfoFragment extends Fragment {
     private TextView txtBookTitle;
     private TextView txtAuthor;
     private TextView txtCategory;
-    //private TextView txtDes;
     private Button btnViewPDF;
     private EditText edtComment;
     private Button btnPostComment;
-    private Observer<Comment> postCommentObserver;
     Timer timer;
     LifecycleOwner owner;
 
@@ -140,7 +138,7 @@ public class BookInfoFragment extends Fragment {
     }
 
     private void OnBtnPostClicked() {
-        postCommentObserver = comment -> {
+        Observer<Comment> postCommentObserver = comment -> {
             if (comment == null) {
                 return;
             }

@@ -8,7 +8,7 @@
     <string name="action_search">Search</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_chat">Chat</string>
+    <string name="menu_chat">Feedback</string>
     <string name="menu_message">Message</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Username</string>

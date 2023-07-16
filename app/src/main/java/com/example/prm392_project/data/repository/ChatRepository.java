@@ -76,19 +76,18 @@ public class ChatRepository {
     }
 
     public MutableLiveData<Boolean> sendMessage(SendMessageDTO sendMessageDTO){
-        apiManager.sendMessage(sendMessageDTO, new Callback<Boolean>() {
+        apiManager.sendMessage(sendMessageDTO, new Callback<Void>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()){
-                    Boolean body = response.body();
-                    sendMessage.setValue(body);
+                    sendMessage.setValue(true);
                 }else {
-                    sendMessage.postValue(null);
+                    sendMessage.postValue(false);
                 }
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 sendMessage.postValue(null);
             }
         });

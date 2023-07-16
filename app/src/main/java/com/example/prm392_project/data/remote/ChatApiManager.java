@@ -1,12 +1,9 @@
 package com.example.prm392_project.data.remote;
 
-import android.icu.util.Measure;
-
 import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.data.DTO.Chat.GetChatDTO;
 import com.example.prm392_project.data.DTO.Chat.GetMessageDTO;
 import com.example.prm392_project.data.DTO.Chat.SendMessageDTO;
-import com.example.prm392_project.data.model.Book;
 import com.example.prm392_project.data.model.Chat;
 import com.example.prm392_project.data.model.Message;
 
@@ -60,8 +57,8 @@ public class ChatApiManager {
         messagesCall.enqueue(callback);
     }
 
-    public void sendMessage(SendMessageDTO sendMessageDTO, Callback<Boolean> callback){
-        Call<Boolean> sendMessageCall = service.sendMessage(sendMessageDTO);
+    public void sendMessage(SendMessageDTO sendMessageDTO, Callback<Void> callback){
+        Call<Void> sendMessageCall = service.sendMessage(sendMessageDTO);
         sendMessageCall.enqueue(callback);
     }
 }

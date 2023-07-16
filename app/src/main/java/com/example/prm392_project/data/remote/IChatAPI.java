@@ -21,5 +21,5 @@ public interface IChatAPI {
     Call<List<Message>> loadMessage(@Body GetMessageDTO getMessageDTO);
 
     @POST("api/Chat/sendMessage")
-    Call<Boolean> sendMessage(@Body SendMessageDTO sendMessageDTO);
+    Call<Void> sendMessage(@Body SendMessageDTO sendMessageDTO);
 }
