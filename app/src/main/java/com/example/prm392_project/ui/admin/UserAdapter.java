@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
-    private List<UserInfo> users;
+    public List<UserInfo> users;
     public UserAdapter(){}
     public void setListUser(List<UserInfo> users) {this.users = users;}
     public UserHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
