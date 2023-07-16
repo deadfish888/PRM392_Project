@@ -1,38 +1,20 @@
-package com.example.prm392_project.data.remote;
+package com.example.prm392_project.data.remote.APIManager;
 
+import com.example.prm392_project.data.DTO.User.UserUpdateDTO;
 import com.example.prm392_project.data.model.UserInfo;
+import com.example.prm392_project.data.remote.Base.BaseAPIManager;
+import com.example.prm392_project.data.remote.IAPIService.IUserAPI;
 
-import java.io.IOException;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class UserApiManager {
+public class UserApiManager extends BaseAPIManager<IUserAPI> {
     private static IUserAPI service;
     private static UserApiManager apiManager;
     private UserApiManager(String token) {
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request newRequest  = chain.request().newBuilder()
-                        .addHeader("Authorization", "Bearer " + token)
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(client)
-                .baseUrl("http://139.59.115.128/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(IUserAPI.class);
+        this.service = this.GetService(token, IUserAPI.class);
     }
 
     public static UserApiManager getInstance(String token) {
@@ -49,6 +31,11 @@ public class UserApiManager {
 
     public void getAllUsers(Callback<List<UserInfo>> callback){
         Call<List<UserInfo>> usersCall = service.getAllUsers();
+        usersCall.enqueue(callback);
+    }
+
+    public void UpdateUserPhone(Callback<UserInfo> callback, UserUpdateDTO userUpdateDTO){
+        Call<UserInfo> usersCall = service.PutUserPhone(userUpdateDTO);
         usersCall.enqueue(callback);
     }
 

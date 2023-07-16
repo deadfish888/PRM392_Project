@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.prm392_project.data.DTO.Category.CategoryRequestDTO;
 import com.example.prm392_project.data.model.Category;
-import com.example.prm392_project.data.remote.CategoryApiManager;
+import com.example.prm392_project.data.remote.APIManager.CategoryApiManager;
 
 import java.util.List;
 

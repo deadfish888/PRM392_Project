@@ -5,9 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.chat.ChatFragment"
+    tools:context=".ui.chat.FeedbackFragment"
     android:orientation="vertical">
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/feedback_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/purple_700"
+        android:visibility="visible" />
     <!-- RecyclerView to display chat messages -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
@@ -16,7 +24,8 @@
         android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:padding="8dp"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        tools:listitem="@layout/message_item_sent"/>
 
     <!-- LinearLayout for the message input area -->
     <LinearLayout
@@ -27,7 +36,7 @@
 
         <!-- EditText for typing the message -->
         <EditText
-            android:id="@+id/messageEditText"
+            android:id="@+id/edtMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,7 +47,7 @@
 
         <!-- Button to send the message -->
         <Button
-            android:id="@+id/sendButton"
+            android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send" />

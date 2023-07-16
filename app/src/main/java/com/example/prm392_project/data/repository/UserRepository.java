@@ -2,7 +2,8 @@ package com.example.prm392_project.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 import com.example.prm392_project.data.model.UserInfo;
-import com.example.prm392_project.data.remote.UserApiManager;
+import com.example.prm392_project.data.remote.APIManager.UserApiManager;
+
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;

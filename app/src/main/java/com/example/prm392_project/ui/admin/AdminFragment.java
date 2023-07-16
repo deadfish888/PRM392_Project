@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavHost;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +15,7 @@ import android.widget.Button;
 
 import com.example.prm392_project.R;
 import com.example.prm392_project.databinding.FragmentAdminBinding;
-import com.example.prm392_project.databinding.FragmentHomeBinding;
+import com.example.prm392_project.ui.admin.book.Activity_Admin_Book;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,15 +102,15 @@ public class AdminFragment extends Fragment {
     }
 
     private void OnClickBookButton() {
-        Log.d("LogDm", "clickOnBook");
+        Intent intent = new Intent(this.getContext(), Activity_Admin_Book.class);
+        this.startActivity(intent);
     }
 
     private void OnClickCategoryButton() {
-        Log.d("LogDm", "clickOnCategory");
+        NavHostFragment.findNavController(AdminFragment.this).navigate(R.id.action_nav_admin_to_adCateFrag);
     }
 
     private void OnClickUserButton() {
-        Log.d("LogDm", "clickOnUser");
         Intent i = new Intent(getContext(), UserManager.class);
         startActivity(i);
     }

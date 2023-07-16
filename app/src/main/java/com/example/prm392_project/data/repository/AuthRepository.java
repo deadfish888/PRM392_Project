@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.prm392_project.data.DTO.Auth.Login;
 import com.example.prm392_project.data.DTO.Auth.RegisterDTO;
 import com.example.prm392_project.data.Result;
-import com.example.prm392_project.data.model.UserInfo;
 import com.example.prm392_project.data.model.UserLoggedIn;
-import com.example.prm392_project.data.remote.AuthApiManager;
+import com.example.prm392_project.data.remote.APIManager.AuthApiManager;
+
 
 import java.io.IOException;
 
@@ -29,6 +29,9 @@ public class AuthRepository {
             instance = new AuthRepository(authApiManager);
         }
         return instance;
+    }
+    public static void clearInstance(){
+        instance =null;
     }
     public MutableLiveData<Result<UserLoggedIn>> login(Login loginRequest) {
         authApiManager.login(loginRequest, new Callback<UserLoggedIn>() {

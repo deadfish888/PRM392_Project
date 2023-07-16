@@ -1,46 +1,23 @@
-package com.example.prm392_project.data.remote;
+package com.example.prm392_project.data.remote.APIManager;
 
-import android.icu.util.Measure;
-
-import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.data.DTO.Chat.GetChatDTO;
 import com.example.prm392_project.data.DTO.Chat.GetMessageDTO;
 import com.example.prm392_project.data.DTO.Chat.SendMessageDTO;
-import com.example.prm392_project.data.model.Book;
 import com.example.prm392_project.data.model.Chat;
 import com.example.prm392_project.data.model.Message;
+import com.example.prm392_project.data.remote.Base.BaseAPIManager;
+import com.example.prm392_project.data.remote.IAPIService.IChatAPI;
 
-import java.io.IOException;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ChatApiManager {
+public class ChatApiManager extends BaseAPIManager<IChatAPI> {
     private static IChatAPI service;
     private static ChatApiManager apiManager;
     private ChatApiManager(String token) {
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request newRequest  = chain.request().newBuilder()
-                        .addHeader("Authorization", "Bearer " + token)
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(client)
-                .baseUrl(MainApplication.API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(IChatAPI.class);
+        this.service=this.GetService(token, IChatAPI.class);
     }
 
     public static ChatApiManager getInstance(String token) {
