@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.content.*;
 import android.widget.Toast;
 
+import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
 import com.example.prm392_project.data.DTO.User.UserUpdateDTO;
 import com.example.prm392_project.data.model.UserInfo;
@@ -50,6 +51,7 @@ public class AccountFragment extends Fragment {
     private UserApiManager userApiManager;
 
     private EditText phoneText;
+    private int userId;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -95,10 +97,25 @@ public class AccountFragment extends Fragment {
 
     private void SetupData(View view){
         sharedpreferences = getActivity().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-        TextView userNameText= (TextView)view.findViewById(R.id.textView3);
-        userNameText.setText(sharedpreferences.getString("username_key",null));
-        EditText userPhoneText = (EditText)view.findViewById(R.id.editTextText);
-        userPhoneText.setText(sharedpreferences.getString("phone",null));
+        MainApplication.userApiManager.getUserByUsername(sharedpreferences.getString("username_key", null), new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                if(response.isSuccessful()){
+                    userId = response.body().getId();
+                    TextView userNameText= (TextView)view.findViewById(R.id.textView3);
+                    userNameText.setText(response.body().getUsername());
+                    EditText userPhoneText = (EditText)view.findViewById(R.id.editTextText);
+                    userPhoneText.setText(response.body().getPhoneNumber());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
     private void SetupEventClickButton(View view) {
@@ -113,19 +130,19 @@ public class AccountFragment extends Fragment {
 
     private void SaveAccountData(){
 
-        this.userApiManager = UserApiManager.getInstance(sharedpreferences.getString("token",null));
-        int id = UserRepository.getInstance(this.userApiManager).getUserByUsername("admin").getValue().getId();
-        this.userApiManager.UpdateUserPhone(new Callback<UserInfo>() {
+        MainApplication.userApiManager.UpdateUserPhone(new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(getContext(),"Save account successfully",Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<UserInfo> call, Throwable t) {
+                Toast.makeText(getContext(),"Save account successfully",Toast.LENGTH_LONG).show();
             }
-        },new UserUpdateDTO(id,this.phoneText.getText().toString()));
+        },new UserUpdateDTO(userId,this.phoneText.getText().toString()));
+
+
     }
 }
