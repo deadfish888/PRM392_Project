@@ -72,7 +72,7 @@ public class BookInfoFragment extends Fragment {
 
         binding = FragmentBookInfoBinding.inflate(inflater, container, false);
         root = binding.getRoot();
-        owner=getViewLifecycleOwner();
+        owner = getViewLifecycleOwner();
         Bundle args = getArguments();
         if (args != null) {
             String data = args.getString("bookInfo");
@@ -118,6 +118,7 @@ public class BookInfoFragment extends Fragment {
         });
         this.OnBtnPostClicked();
     }
+
     private void setUpAdapter() {
         OnItemClickListener onItemClickListener = (view, cmt) -> {
         };

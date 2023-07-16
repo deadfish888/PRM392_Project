@@ -20,9 +20,9 @@
 
     <fragment
         android:id="@+id/nav_chat"
-        android:name="com.example.prm392_project.ui.chat.ChatFragment"
+        android:name="com.example.prm392_project.ui.chat.FeedbackFragment"
         android:label="@string/menu_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_feedback" />
 
     <fragment
         android:id="@+id/nav_account"
@@ -59,7 +59,7 @@
     <fragment
         android:id="@+id/adCateFrag"
         android:name="com.example.prm392_project.ui.admin.adcategory.adCateFrag"
-        android:label="fragment_ad_cate"
+        android:label="Category Manager"
         tools:layout="@layout/fragment_ad_cate" >
         <action
             android:id="@+id/action_adCateFrag_self"
@@ -68,7 +68,7 @@
     <dialog
         android:id="@+id/popUpFragment"
         android:name="com.example.prm392_project.ui.admin.adcategory.PopUpFragment"
-        android:label="fragment_pop_up"
+        android:label="Delete?"
         tools:layout="@layout/fragment_pop_up" >
         <action
             android:id="@+id/action_popUpFragment_to_adCateFrag"

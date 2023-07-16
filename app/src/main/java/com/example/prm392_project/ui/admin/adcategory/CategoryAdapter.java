@@ -34,9 +34,8 @@ public class CategoryAdapter extends BaseAdapter {
     private Context context;
     private List<Category> items;
 
-    public CategoryAdapter(Context context, List<Category> listCate){
+    public CategoryAdapter(Context context){
         this.context=context;
-        this.items=listCate;
     }
 
     @Override
@@ -72,7 +71,7 @@ public class CategoryAdapter extends BaseAdapter {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if(response.isSuccessful()) {
-                                    editCate(items.get(position).getId(), newName);
+                                    editCate(position, newName);
                                     Toast.makeText(context, "Edit successfully", Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -93,9 +92,7 @@ public class CategoryAdapter extends BaseAdapter {
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if(response.isSuccessful()){
                                     Toast.makeText(context,"Delete successfully",Toast.LENGTH_LONG).show();
-                                    removeCategory(items.get(position).getId());
-                                    HomeFragment homeFragment = new HomeFragment();
-                                    NavHostFragment.findNavController(homeFragment).navigate(R.id.action_nav_home_to_adCateFrag);
+                                    removeCategory(position);
                                 }
                             }
 
@@ -116,13 +113,13 @@ public class CategoryAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void removeCategory(int cateID){
-        items.remove(items.get(cateID));
+    public void removeCategory(int position){
+        items.remove(position);
         notifyDataSetChanged();
     }
 
-    public void editCate( int id, String name){
-        items.get(id).setName(name);
+    public void editCate( int position, String name){
+        items.get(position).setName(name);
         notifyDataSetChanged();
     }
 

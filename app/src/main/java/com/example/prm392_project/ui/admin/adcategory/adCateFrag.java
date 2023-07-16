@@ -29,27 +29,25 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class adCateFrag extends Fragment {
-
-    public adCateFrag(){
-
-    }
+    List<Category> listCate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_ad_cate, container, false);
-        ListView lvCategory=view.findViewById(R.id.lv_cate_admin);
-         List<Category> listCate = new ArrayList<>();
-        CategoryAdapter cateAdap=new CategoryAdapter(getActivity().getApplicationContext(),listCate);
+        ListView lvCategory = view.findViewById(R.id.lv_cate_admin);
+
+        CategoryAdapter cateAdap = new CategoryAdapter(view.getContext());
         lvCategory.setAdapter(cateAdap);
         MainApplication.categoryApiManager.GetAllCategories(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if (response.isSuccessful()){
+                    listCate = response.body();
+                    cateAdap.setListCategory(listCate);
+                }
 
-                listCate.addAll(response.body());
-                cateAdap.setListCategory(listCate);
             }
-
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
 
@@ -65,14 +63,12 @@ public class adCateFrag extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-
-
-        Button btnAdd=view.findViewById(R.id.btnADD);
+        Button btnAdd = view.findViewById(R.id.btnADD);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopUpFragment showPopUp=new PopUpFragment();
-                showPopUp.show(requireActivity().getSupportFragmentManager(),"ShowPopUp");
+                PopUpFragment showPopUp = new PopUpFragment();
+                showPopUp.show(requireActivity().getSupportFragmentManager(), "ShowPopUp");
             }
         });
     }
