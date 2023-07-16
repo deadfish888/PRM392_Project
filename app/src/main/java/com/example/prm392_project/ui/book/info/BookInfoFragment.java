@@ -72,7 +72,7 @@ public class BookInfoFragment extends Fragment {
 
         binding = FragmentBookInfoBinding.inflate(inflater, container, false);
         root = binding.getRoot();
-
+        owner=getViewLifecycleOwner();
         Bundle args = getArguments();
         if (args != null) {
             String data = args.getString("bookInfo");
