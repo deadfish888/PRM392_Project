@@ -25,7 +25,7 @@ public interface IBookAPI {
     Call<Book> GetBook(@Path("id")int id);
 
     @GET("api/Books/search")
-    Call<List<Book>> SearchBooks(@Query("author")String author, @Query("title")String title, @Query("categoryID") int categoryId);
+    Call<List<Book>> SearchBooks(@Query("author")String author, @Query("title")String title, @Query("categoryID") Integer categoryId);
 
     @POST("api/Books")
     Call<Book> PostBook(@Body BookCreateDTO book);

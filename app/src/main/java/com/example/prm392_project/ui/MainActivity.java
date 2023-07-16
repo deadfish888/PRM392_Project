@@ -1,20 +1,18 @@
 package com.example.prm392_project.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
-import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
 
 import com.example.prm392_project.ui.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -32,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String USERNAME_KEY = "username_key";
     public static final String TOKEN = "token";
     public static final String Role = "user";
+    public static final String CREDENTIAL = "credential";
     public static SharedPreferences sharedpreferences;
-    public static String username, token,role;
+    public static String username, token,role, credential;
 
     private NavigationView mainNavigationView;
 
@@ -53,30 +52,25 @@ public class MainActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         username = sharedpreferences.getString(USERNAME_KEY, null);
         token = sharedpreferences.getString(TOKEN, null);
-        role = sharedpreferences.getString(Role,null);
+        role = sharedpreferences.getString(Role,"user");
+        credential = sharedpreferences.getString(CREDENTIAL, "HE123456 - 012345679");
     }
 
     private void SetupClickEventButton(){
         Menu navigationMenu = this.mainNavigationView.getMenu();
-        navigationMenu.findItem(R.id.nav_logout).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem item) {
-                OnClickLogout();
-                return true;
-            }
+        navigationMenu.findItem(R.id.nav_logout).setOnMenuItemClickListener(item -> {
+            OnClickLogout();
+            return true;
         });
     }
 
-
-
     private void OnClickLogout(){
-        sharedpreferences.edit().clear().commit();
+        sharedpreferences.edit().clear().apply();
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
     }
 
-
-
+    @SuppressLint("SetTextI18n")
     private void SetupNavBar(){
         //setup fragment for nav
         DrawerLayout drawer = binding.drawerLayout;
@@ -90,16 +84,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
         this.mainNavigationView = navigationView;
 
+        TextView tvUsername = navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
+        tvUsername.setText("Account: "+username);
+        TextView tvUserInfo = navigationView.getHeaderView(0).findViewById(R.id.tvUserInfo);
+        tvUserInfo.setText(credential);
         //check user is admin ?
         Menu navigationMenu = navigationView.getMenu();
         navigationMenu.findItem(R.id.nav_admin).setVisible(role.equals("Admin"));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        navigationMenu.findItem(R.id.nav_chat).setVisible(!role.equals("Admin"));
     }
 
     @Override

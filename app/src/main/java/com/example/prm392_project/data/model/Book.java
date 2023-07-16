@@ -5,9 +5,9 @@ public class Book {
     private String title;
     private String author;
     private String content;
-    private int categoryId;
+    private Integer categoryId;
 
-    public Book(int id, String title, String author, String content, int categoryId) {
+    public Book(int id, String title, String author, String content, Integer categoryId) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -47,11 +47,11 @@ public class Book {
         this.content = content;
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 }

@@ -19,6 +19,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -43,12 +44,11 @@ public class LoginActivity extends AppCompatActivity {
 
     // creating constant keys for shared preferences.
     public static final String SHARED_PREFS = "shared_prefs";
-
     public static final String USERNAME_KEY = "username_key";
     public static final String TOKEN = "token";
     public static final String TIME = "time";
-
     public static final String Role = "user";
+    public static final String CREDENTIAL = "credential";
 
     // variable for shared preferences.
     SharedPreferences sharedpreferences;
@@ -134,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    hideSoftKeyboard(LoginActivity.this, v);
                     loginViewModel.login(usernameEditText.getText().toString(),
                             passwordEditText.getText().toString()).observe(LoginActivity.this, resul -> {
                         Result<UserLoggedIn> result;
@@ -149,7 +150,8 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
                             editor.putString(TOKEN, data.getToken());
                             editor.putLong(TIME, new Date().getTime());
-
+                            editor.putString(Role,data.getRole());
+                            editor.putString(CREDENTIAL, data.getCredentialCode()+" - "+data.getPhone());
                             // to save our data with key and value.
                             editor.apply();
                         } else {
@@ -171,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideSoftKeyboard(LoginActivity.this, v);
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString()).observe(LoginActivity.this, resul -> {
@@ -188,6 +191,7 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString(TOKEN, data.getToken());
                                 editor.putLong(TIME, new Date().getTime());
                                 editor.putString(Role,data.getRole());
+                                editor.putString(CREDENTIAL, data.getCredentialCode()+" - "+data.getPhone());
                                 // to save our data with key and value.
                                 editor.apply();
                             } else {
@@ -231,5 +235,11 @@ public class LoginActivity extends AppCompatActivity {
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
         }
+    }
+
+    public void hideSoftKeyboard (Activity activity, View view)
+    {
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

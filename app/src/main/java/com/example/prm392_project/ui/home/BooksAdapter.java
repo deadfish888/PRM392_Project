@@ -15,11 +15,13 @@ import com.example.prm392_project.data.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHolder> {
     @NonNull
     private final Context context;
-    private List<Book> books = new ArrayList();
+    private List<Book> books;
+    private List<Book> filteredData;
     private final OnItemClickListener onBookClickListener;
     public BooksAdapter(@NonNull Context context, OnItemClickListener onBookClickListener) {
         this.context = context;
@@ -32,16 +34,33 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
 
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
-        holder.setBookItem(books.get(position));
+        holder.setBookItem(filteredData.get(position));
     }
     @Override
     public int getItemCount() {
-        return books == null ? 0 : books.size();
+        return filteredData == null ? 0 : filteredData.size();
     }
-    public void setBooks(List books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
+        this.filteredData = books;
         this.notifyDataSetChanged();
     }
+
+    public void getFilter(String query) {
+        filteredData.clear();
+        if (query.isEmpty()) {
+            filteredData.addAll(books);
+        } else {
+            query = query.toLowerCase();
+            for (Book book : books) {
+                if (book.getTitle().toLowerCase().contains(query)) {
+                    filteredData.add(book);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     class BookViewHolder extends RecyclerView.ViewHolder {
         private final TextView book_title;
         private final TextView book_author;

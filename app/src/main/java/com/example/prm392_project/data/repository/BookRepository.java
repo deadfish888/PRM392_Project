@@ -72,7 +72,7 @@ public class BookRepository {
         return bookById;
     }
 
-    public MutableLiveData<List<Book>> searchBooks(String author, String title, int categoryId){
+    public MutableLiveData<List<Book>> searchBooks(String author, String title, Integer categoryId){
         bookApiManager.SearchBooks(author, title, categoryId, new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
@@ -88,7 +88,7 @@ public class BookRepository {
                 searchBooks.postValue(null);
             }
         });
-        return allBooks;
+        return searchBooks;
     }
 
     public MutableLiveData<Book> postBook(BookCreateDTO book){

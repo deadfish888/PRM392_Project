@@ -1,5 +1,6 @@
 package com.example.prm392_project.data.remote;
 
+import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.data.DTO.Book.BookCreateDTO;
 import com.example.prm392_project.data.DTO.Book.BookUpdateDTO;
 import com.example.prm392_project.data.model.Book;
@@ -31,7 +32,7 @@ public class BookApiManager {
         }).build();
         Retrofit retrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("http://139.59.115.128/")
+                .baseUrl(MainApplication.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(IBookAPI.class);
@@ -54,7 +55,7 @@ public class BookApiManager {
         bookCall.enqueue(callback);
     }
 
-    public void SearchBooks(String author, String title, int categoryId, Callback<List<Book>> callback){
+    public void SearchBooks(String author, String title, Integer categoryId, Callback<List<Book>> callback){
         Call<List<Book>> booksCall = service.SearchBooks(author, title, categoryId);
         booksCall.enqueue(callback);
     }
