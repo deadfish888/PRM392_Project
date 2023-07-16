@@ -1,5 +1,6 @@
 package com.example.prm392_project.ui.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,7 +13,7 @@ import android.widget.Button;
 
 import com.example.prm392_project.R;
 import com.example.prm392_project.databinding.FragmentAdminBinding;
-import com.example.prm392_project.databinding.FragmentHomeBinding;
+import com.example.prm392_project.ui.admin.book.Activity_Admin_Book;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,7 +100,8 @@ public class AdminFragment extends Fragment {
     }
 
     private void OnClickBookButton() {
-        Log.d("LogDm", "clickOnBook");
+        Intent intent = new Intent(this.getContext(), Activity_Admin_Book.class);
+        this.startActivity(intent);
     }
 
     private void OnClickCategoryButton() {
