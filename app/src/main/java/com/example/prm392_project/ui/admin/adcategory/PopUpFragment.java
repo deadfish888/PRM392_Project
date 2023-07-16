@@ -2,65 +2,68 @@ package com.example.prm392_project.ui.admin.adcategory;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
+import com.example.prm392_project.data.DTO.Category.CategoryRequestDTO;
+import com.example.prm392_project.data.model.Category;
+import com.example.prm392_project.ui.admin.AdminFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PopUpFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class PopUpFragment extends Fragment {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class PopUpFragment extends DialogFragment {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public PopUpFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PopUpFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PopUpFragment newInstance(String param1, String param2) {
-        PopUpFragment fragment = new PopUpFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_pop_up, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Button btnSubmit =view.findViewById(R.id.btnSubmit);
+        EditText edtName=view.findViewById(R.id.edtName);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainApplication.categoryApiManager.PostCategory(new CategoryRequestDTO(edtName.getText().toString().trim()), new Callback<Category>() {
+                    @Override
+                    public void onResponse(Call<Category> call, Response<Category> response) {
+                        if(response.isSuccessful()){
+                            Category body=response.body();
+                            NavHostFragment.findNavController(PopUpFragment.this).navigate(R.id.action_adCateFrag_self);
+                            PopUpFragment.this.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Category> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
     }
 }
