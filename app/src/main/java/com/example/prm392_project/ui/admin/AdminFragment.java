@@ -3,6 +3,8 @@ package com.example.prm392_project.ui.admin;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavHost;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -103,7 +105,7 @@ public class AdminFragment extends Fragment {
     }
 
     private void OnClickCategoryButton() {
-        Log.d("LogDm", "clickOnCategory");
+        NavHostFragment.findNavController(AdminFragment.this).navigate(R.id.action_nav_admin_to_adCateFrag);
     }
 
     private void OnClickUserButton() {
