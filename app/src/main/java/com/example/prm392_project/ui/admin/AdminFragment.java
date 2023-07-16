@@ -1,5 +1,6 @@
 package com.example.prm392_project.ui.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -108,6 +109,8 @@ public class AdminFragment extends Fragment {
 
     private void OnClickUserButton() {
         Log.d("LogDm", "clickOnUser");
+        Intent i = new Intent(getContext(), UserManager.class);
+        startActivity(i);
     }
 
 }

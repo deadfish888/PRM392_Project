@@ -22,7 +22,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        authApiManager = AuthApiManager.getInstance();
+        authApiManager = AuthApiManager.getInstance(TOKEN);
     }
 
     public static void setUpManager(){

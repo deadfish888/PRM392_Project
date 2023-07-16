@@ -5,9 +5,7 @@ import com.example.prm392_project.data.DTO.Auth.Login;
 import com.example.prm392_project.data.DTO.Auth.RegisterDTO;
 import com.example.prm392_project.data.model.UserInfo;
 import com.example.prm392_project.data.model.UserLoggedIn;
-
 import java.io.IOException;
-
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -20,9 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AuthApiManager {
     private static IAuthAPI service;
     private static AuthApiManager apiManager;
-    private AuthApiManager() {
-        service = RetrofitService.Create();
-    }
     private AuthApiManager(String token){
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
@@ -40,9 +35,11 @@ public class AuthApiManager {
                 .build();
         service = retrofit.create(IAuthAPI.class);
     }
-    public static AuthApiManager getInstance() {
+
+    public static AuthApiManager getInstance(String token) {
+
         if (apiManager == null) {
-            apiManager = new AuthApiManager();
+            apiManager = new AuthApiManager(token);
         }
         return apiManager;
     }
