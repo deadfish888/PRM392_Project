@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
 
+import com.example.prm392_project.data.remote.AuthApiManager;
 import com.example.prm392_project.ui.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void SetupData(){
         // initializing our shared preferences.
+        AuthApiManager.clearInstance();
         sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         username = sharedpreferences.getString(USERNAME_KEY, null);
         token = sharedpreferences.getString(TOKEN, null);

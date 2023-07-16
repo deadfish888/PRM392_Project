@@ -31,7 +31,8 @@ public class MainApplication extends Application {
         commentApiManager = CommentApiManager.getInstance(TOKEN);
         chatApiManager = ChatApiManager.getInstance(TOKEN);
         userApiManager = UserApiManager.getInstance(TOKEN);
-        authApiManager.setUpToken(TOKEN);
+        AuthApiManager.clearInstance();
+        authApiManager = AuthApiManager.getInstance(TOKEN);
     }
 
 }
