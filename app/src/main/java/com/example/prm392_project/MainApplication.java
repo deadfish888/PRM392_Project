@@ -2,13 +2,12 @@ package com.example.prm392_project;
 
 import android.app.Application;
 
-import com.example.prm392_project.data.model.Chat;
-import com.example.prm392_project.data.remote.AuthApiManager;
-import com.example.prm392_project.data.remote.BookApiManager;
-import com.example.prm392_project.data.remote.CategoryApiManager;
-import com.example.prm392_project.data.remote.ChatApiManager;
-import com.example.prm392_project.data.remote.CommentApiManager;
-import com.example.prm392_project.data.remote.UserApiManager;
+import com.example.prm392_project.data.remote.APIManager.AuthApiManager;
+import com.example.prm392_project.data.remote.APIManager.BookApiManager;
+import com.example.prm392_project.data.remote.APIManager.CategoryApiManager;
+import com.example.prm392_project.data.remote.APIManager.ChatApiManager;
+import com.example.prm392_project.data.remote.APIManager.CommentApiManager;
+import com.example.prm392_project.data.remote.APIManager.UserApiManager;
 
 public class MainApplication extends Application {
     public static final String API_URL = "http://139.59.115.128/";

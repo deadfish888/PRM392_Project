@@ -1,4 +1,6 @@
-package com.example.prm392_project.data.remote;
+package com.example.prm392_project.data.remote.Base;
+
+import com.example.prm392_project.data.remote.IAPIService.IAuthAPI;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

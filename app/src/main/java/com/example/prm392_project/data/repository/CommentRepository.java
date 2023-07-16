@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.prm392_project.data.DTO.Comment.CommentCreateDTO;
 import com.example.prm392_project.data.DTO.Comment.CommentDeleteDTO;
 import com.example.prm392_project.data.model.Comment;
-import com.example.prm392_project.data.remote.CommentApiManager;
+import com.example.prm392_project.data.remote.APIManager.CommentApiManager;
+
 
 import java.util.List;
 

@@ -1,43 +1,23 @@
-package com.example.prm392_project.data.remote;
+package com.example.prm392_project.data.remote.APIManager;
 
-import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.data.DTO.Auth.Login;
 import com.example.prm392_project.data.DTO.Auth.RegisterDTO;
 import com.example.prm392_project.data.model.UserLoggedIn;
+import com.example.prm392_project.data.remote.Base.BaseAPIManager;
+import com.example.prm392_project.data.remote.IAPIService.IAuthAPI;
+import com.example.prm392_project.data.remote.Base.RetrofitService;
 
-import java.io.IOException;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AuthApiManager {
+public class AuthApiManager extends BaseAPIManager<IAuthAPI> {
     private static IAuthAPI service;
     private static AuthApiManager apiManager;
     private AuthApiManager() {
         service = RetrofitService.Create();
     }
     private AuthApiManager(String token){
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request newRequest  = chain.request().newBuilder()
-                        .addHeader("Authorization", "Bearer " + token)
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(client)
-                .baseUrl(MainApplication.API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(IAuthAPI.class);
+       this.GetService(token, IAuthAPI.class);
     }
     public static AuthApiManager getInstance() {
         if (apiManager == null) {

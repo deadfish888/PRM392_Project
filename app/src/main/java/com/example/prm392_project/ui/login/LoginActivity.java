@@ -50,6 +50,10 @@ public class LoginActivity extends AppCompatActivity {
     public static final String Role = "user";
     public static final String CREDENTIAL = "credential";
 
+    public static final String ID="id";
+
+    public static final String PHONE ="phone";
+
     // variable for shared preferences.
     SharedPreferences sharedpreferences;
     String username, token;
@@ -182,18 +186,8 @@ public class LoginActivity extends AppCompatActivity {
                                 UserLoggedIn data = ((Result.Success<UserLoggedIn>) resul).getData();
                                 // Login successful
                                 result =new Result.Success<>(data);
+                                setupSharedpreferences(data);
 
-                                MainApplication.TOKEN = data.getToken();
-                                MainApplication.setUpManager();
-
-                                SharedPreferences.Editor editor = sharedpreferences.edit();
-                                editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
-                                editor.putString(TOKEN, data.getToken());
-                                editor.putLong(TIME, new Date().getTime());
-                                editor.putString(Role,data.getRole());
-                                editor.putString(CREDENTIAL, data.getCredentialCode()+" - "+data.getPhone());
-                                // to save our data with key and value.
-                                editor.apply();
                             } else {
                                 // Login error
                                 result = new Result.Error(new IOException("Login failed"));
@@ -205,6 +199,21 @@ public class LoginActivity extends AppCompatActivity {
                                 loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
                             }
                         });
+            }
+
+            public void setupSharedpreferences(UserLoggedIn data){
+                MainApplication.TOKEN = data.getToken();
+                MainApplication.setUpManager();
+
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString(USERNAME_KEY, usernameEditText.getText().toString());
+                editor.putString(TOKEN, data.getToken());
+                editor.putLong(TIME, new Date().getTime());
+                editor.putString(Role,data.getRole());
+                editor.putString(CREDENTIAL, data.getCredentialCode()+" - "+data.getPhone());
+                editor.putString(PHONE,data.getPhone());
+                // to save our data with key and value.
+                editor.apply();
             }
         });
     }
