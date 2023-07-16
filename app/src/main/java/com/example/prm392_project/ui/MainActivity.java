@@ -1,22 +1,18 @@
 package com.example.prm392_project.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
-import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
 
 import com.example.prm392_project.ui.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -62,25 +58,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void SetupClickEventButton(){
         Menu navigationMenu = this.mainNavigationView.getMenu();
-        navigationMenu.findItem(R.id.nav_logout).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem item) {
-                OnClickLogout();
-                return true;
-            }
+        navigationMenu.findItem(R.id.nav_logout).setOnMenuItemClickListener(item -> {
+            OnClickLogout();
+            return true;
         });
     }
 
-
-
     private void OnClickLogout(){
-        sharedpreferences.edit().clear().commit();
+        sharedpreferences.edit().clear().apply();
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
     }
 
-
-
+    @SuppressLint("SetTextI18n")
     private void SetupNavBar(){
         //setup fragment for nav
         DrawerLayout drawer = binding.drawerLayout;
@@ -101,9 +91,8 @@ public class MainActivity extends AppCompatActivity {
         //check user is admin ?
         Menu navigationMenu = navigationView.getMenu();
         navigationMenu.findItem(R.id.nav_admin).setVisible(role.equals("Admin"));
+        navigationMenu.findItem(R.id.nav_chat).setVisible(!role.equals("Admin"));
     }
-
-
 
     @Override
     public boolean onSupportNavigateUp() {

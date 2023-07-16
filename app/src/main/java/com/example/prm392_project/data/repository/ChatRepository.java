@@ -1,16 +1,13 @@
 package com.example.prm392_project.data.repository;
 
-import android.icu.util.Measure;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.prm392_project.data.DTO.Chat.GetChatDTO;
 import com.example.prm392_project.data.DTO.Chat.GetMessageDTO;
 import com.example.prm392_project.data.DTO.Chat.SendMessageDTO;
-import com.example.prm392_project.data.model.Book;
 import com.example.prm392_project.data.model.Chat;
 import com.example.prm392_project.data.model.Message;
-import com.example.prm392_project.data.remote.ChatApiManager;
+import com.example.prm392_project.data.remote.APIManager.ChatApiManager;
 
 import java.util.List;
 
@@ -76,18 +73,19 @@ public class ChatRepository {
     }
 
     public MutableLiveData<Boolean> sendMessage(SendMessageDTO sendMessageDTO){
-        apiManager.sendMessage(sendMessageDTO, new Callback<Void>() {
+        apiManager.sendMessage(sendMessageDTO, new Callback<Boolean>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful()){
-                    sendMessage.setValue(true);
+                    Boolean body = response.body();
+                    sendMessage.setValue(body);
                 }else {
-                    sendMessage.postValue(false);
+                    sendMessage.postValue(null);
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<Boolean> call, Throwable t) {
                 sendMessage.postValue(null);
             }
         });

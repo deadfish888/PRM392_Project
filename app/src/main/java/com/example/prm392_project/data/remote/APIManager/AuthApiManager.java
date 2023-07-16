@@ -26,8 +26,15 @@ public class AuthApiManager extends BaseAPIManager<IAuthAPI> {
         return apiManager;
     }
 
-    public void setUpToken(String token) {
-        apiManager = new AuthApiManager(token);
+    public static void clearInstance() {
+        apiManager = null;
+    }
+
+    public static AuthApiManager getInstance(String token) {
+        if (apiManager == null) {
+            apiManager = new AuthApiManager(token);
+        }
+        return apiManager;
     }
 
     public void login(Login loginRequest, Callback<UserLoggedIn> callback){

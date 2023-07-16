@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.prm392_project.data.DTO.Book.BookCreateDTO;
 import com.example.prm392_project.data.DTO.Book.BookUpdateDTO;
 import com.example.prm392_project.data.model.Book;
-import com.example.prm392_project.data.remote.BookApiManager;
+import com.example.prm392_project.data.remote.APIManager.BookApiManager;
+
 
 import java.util.List;
 
