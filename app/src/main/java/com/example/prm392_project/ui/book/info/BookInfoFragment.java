@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -45,25 +46,15 @@ import retrofit2.Response;
 
 public class BookInfoFragment extends Fragment {
     private FragmentBookInfoBinding binding;
-    View root;
+    private View root;
     private CommentAdapter commentAdapter;
-    BookInfoViewModel bookInfoViewModel;
+    private BookInfoViewModel bookInfoViewModel;
     private List<Comment> currentComments;
     ContentLoadingProgressBar progress;
     private RecyclerView recyclerView;
     private Book bookInfo;
-    private TextView txtBookTitle;
-    private TextView txtAuthor;
-    private TextView txtCategory;
-    private Button btnViewPDF;
-    private EditText edtComment;
-    private Button btnPostComment;
     Timer timer;
     LifecycleOwner owner;
-
-    public static BookInfoFragment newInstance() {
-        return new BookInfoFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -78,7 +69,7 @@ public class BookInfoFragment extends Fragment {
             String data = args.getString("bookInfo");
             bookInfo = new Gson().fromJson(data, Book.class);
         }
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(bookInfo.getTitle());
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(bookInfo != null ? bookInfo.getTitle() : "");
 
         setUpItemView();
         setUpBookInfo();
@@ -91,28 +82,24 @@ public class BookInfoFragment extends Fragment {
     private void setUpItemView() {
         progress = root.findViewById(R.id.info_progress);
         recyclerView = root.findViewById(R.id.comment_recycler_view);
-        txtBookTitle = root.findViewById(R.id.txtBookTitle);
-        txtAuthor = root.findViewById(R.id.txtAuthor);
-        txtCategory = root.findViewById(R.id.txtCategory);
-        btnViewPDF = root.findViewById(R.id.btnViewPDF);
-        edtComment = root.findViewById(R.id.edtComment);
-        btnPostComment = root.findViewById(R.id.btnPostComment);
     }
 
+    @SuppressLint("SetTextI18n")
     private void setUpBookInfo() {
+        TextView txtBookTitle = root.findViewById(R.id.txtBookTitle);
+        TextView txtAuthor = root.findViewById(R.id.txtAuthor);
+        TextView txtCategory = root.findViewById(R.id.txtCategory);
         txtBookTitle.setText(bookInfo.getTitle());
         txtAuthor.setText("Author: " + bookInfo.getAuthor());
-        bookInfoViewModel.getCategoryById(bookInfo.getCategoryId()).observe(owner, cate -> {
-            txtCategory.setText(cate.getName());
-        });
+        bookInfoViewModel.getCategoryById(bookInfo.getCategoryId()).observe(owner, cate -> txtCategory.setText(cate.getName()));
     }
 
     private void setUpCommentsSection() {
         this.setUpAdapter();
-        bookInfoViewModel.getAllComments(bookInfo.getId()).observe(owner, cmts -> {
-            currentComments = cmts;
-            Collections.reverse(cmts);
-            commentAdapter.setItems(cmts);
+        bookInfoViewModel.getAllComments(bookInfo.getId()).observe(owner, comments -> {
+            currentComments = comments;
+            Collections.reverse(comments);
+            commentAdapter.setItems(comments);
             progress.hide();
             this.updateMessages();
         });
@@ -130,6 +117,7 @@ public class BookInfoFragment extends Fragment {
 
 
     private void OnBtnViewPDFClicked() {
+        Button btnViewPDF = root.findViewById(R.id.btnViewPDF);
         btnViewPDF.setOnClickListener(v -> {
             Intent webIntent = new Intent(getContext(), PDFViewActivity.class);
             webIntent.putExtra("pdf_url", bookInfo.getContent());
@@ -139,6 +127,8 @@ public class BookInfoFragment extends Fragment {
     }
 
     private void OnBtnPostClicked() {
+        EditText edtComment = root.findViewById(R.id.edtComment);
+        Button btnPostComment = root.findViewById(R.id.btnPostComment);
         Observer<Comment> postCommentObserver = comment -> {
             if (comment == null) {
                 return;
@@ -164,13 +154,13 @@ public class BookInfoFragment extends Fragment {
             public void run() {
                 MainApplication.commentApiManager.getAllCommentsByBookId(bookInfo.getId(), new Callback<List<Comment>>() {
                     @Override
-                    public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                    public void onResponse(@NonNull Call<List<Comment>> call, @NonNull Response<List<Comment>> response) {
                         if (!response.isSuccessful()) {
                             return;
                         }
                         List<Comment> newComments = response.body();
                         int currentCommentCount = currentComments.size();
-                        if (currentCommentCount > newComments.size()) {
+                        if (newComments == null || currentCommentCount > newComments.size()) {
                             return;
                         }
                         currentComments.addAll(newComments.subList(currentCommentCount, newComments.size()));
@@ -180,7 +170,7 @@ public class BookInfoFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<List<Comment>> call, Throwable t) {
+                    public void onFailure(@NonNull Call<List<Comment>> call, @NonNull Throwable t) {
 
                     }
                 });
