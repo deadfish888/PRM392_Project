@@ -1,5 +1,6 @@
 package com.example.prm392_project.ui.chat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,14 @@ import com.example.prm392_project.data.model.Message;
 
 import java.util.List;
 
-public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessageViewHolder> {
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHolder> {
     @NonNull
     private final Context context;
     private List<Message> messageList;
     private final String currentUsername;
 
     // Constructor
-    public MessagesAdapter(@NonNull Context context, String currentUsername) {
+    public ChatAdapter(@NonNull Context context, String currentUsername) {
         this.currentUsername = currentUsername;
         this.context = context;
     }
@@ -72,9 +73,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         }
     }
 
-    public void addMessage(Message newMessage) {
-        this.messageList.add(newMessage);
-        this.notifyItemInserted(messageList.size()-1);
+    public void addItem(Message message) {
+        this.messageList.add(message);
+        notifyItemInserted(messageList.size()-1);
     }
 
     // ViewHolder class

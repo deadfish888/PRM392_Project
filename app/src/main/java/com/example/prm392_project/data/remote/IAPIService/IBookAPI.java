@@ -1,8 +1,9 @@
-package com.example.prm392_project.data.remote;
+package com.example.prm392_project.data.remote.IAPIService;
 
 import com.example.prm392_project.data.DTO.Book.BookCreateDTO;
 import com.example.prm392_project.data.DTO.Book.BookUpdateDTO;
 import com.example.prm392_project.data.model.Book;
+import com.example.prm392_project.data.remote.Base.IAPI;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface IBookAPI {
+public interface IBookAPI extends IAPI {
     @GET("api/Books")
     Call<List<Book>> GetBooks();
 
