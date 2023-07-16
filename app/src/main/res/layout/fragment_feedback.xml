@@ -24,7 +24,8 @@
         android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:padding="8dp"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        tools:listitem="@layout/message_item_sent"/>
 
     <!-- LinearLayout for the message input area -->
     <LinearLayout

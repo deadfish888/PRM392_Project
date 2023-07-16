@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
@@ -43,26 +44,31 @@ public class PopUpFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button btnSubmit =view.findViewById(R.id.btnSubmit);
-        EditText edtName=view.findViewById(R.id.edtName);
+        Button btnSubmit = view.findViewById(R.id.btnSubmit);
+        EditText edtName = view.findViewById(R.id.edtName);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainApplication.categoryApiManager.PostCategory(new CategoryRequestDTO(edtName.getText().toString().trim()), new Callback<Category>() {
-                    @Override
-                    public void onResponse(Call<Category> call, Response<Category> response) {
-                        if(response.isSuccessful()){
-                            Category body=response.body();
-                            NavHostFragment.findNavController(PopUpFragment.this).navigate(R.id.action_adCateFrag_self);
-                            PopUpFragment.this.dismiss();
-                        }
-                    }
+                String content = edtName.getText().toString().trim();
+                if (content.isEmpty()) {
+                    return;
+                }
+                MainApplication.categoryApiManager.PostCategory(new CategoryRequestDTO(content),
+                        new Callback<Category>() {
+                            @Override
+                            public void onResponse(Call<Category> call, Response<Category> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(view.getContext(), "New Category added!", Toast.LENGTH_SHORT).show();
+                                    NavHostFragment.findNavController(PopUpFragment.this).navigate(R.id.action_adCateFrag_self);
+                                    PopUpFragment.this.dismiss();
+                                }
+                            }
 
-                    @Override
-                    public void onFailure(Call<Category> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<Category> call, Throwable t) {
 
-                    }
-                });
+                            }
+                        });
             }
         });
     }

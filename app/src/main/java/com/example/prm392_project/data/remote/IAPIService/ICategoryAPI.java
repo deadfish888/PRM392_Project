@@ -25,7 +25,7 @@ public  interface ICategoryAPI extends IAPI {
     Call<Category> getCategoryById(@Path("id")int id);
 
     @PUT("api/Category/{id}")
-    Call<Void> putCategory(@Path("id")int id, CategoryRequestDTO category);
+    Call<Void> putCategory(@Path("id")int id,@Body CategoryRequestDTO category);
 
     @DELETE("api/Category/{id}")
     Call<Void> deleteCategory(@Path("id")int id);
