@@ -9,7 +9,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:text="@string/activity_admin_book_title"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -19,9 +19,11 @@
 
     <EditText
         android:id="@+id/activity_admin_book_txt_id"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="@string/entity_book_id"
         android:inputType="number"
@@ -31,9 +33,11 @@
 
     <EditText
         android:id="@+id/activity_admin_book_txt_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="@string/entity_book_title"
         android:inputType="text"
@@ -43,9 +47,11 @@
 
     <EditText
         android:id="@+id/activity_admin_book_txt_author"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="@string/entity_book_author"
         android:inputType="text"
@@ -55,9 +61,11 @@
 
     <EditText
         android:id="@+id/activity_admin_book_txt_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="@string/entity_book_content"
         android:inputType="text"
@@ -101,24 +109,30 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="@string/action_search"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/activity_admin_book_btn_delete"
         app:layout_constraintTop_toBottomOf="@+id/activity_admin_book_spn_category" />
 
     <Spinner
         android:id="@+id/activity_admin_book_spn_category"
-        android:layout_width="210dp"
-        android:layout_height="35dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_admin_book_txt_content" />
 
     <ListView
         android:id="@+id/activity_admin_book_lv_book"
-        android:layout_width="409dp"
-        android:layout_height="295dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

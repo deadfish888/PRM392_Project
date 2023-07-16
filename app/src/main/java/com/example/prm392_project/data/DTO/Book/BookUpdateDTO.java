@@ -1,5 +1,7 @@
 package com.example.prm392_project.data.DTO.Book;
 
+import com.example.prm392_project.data.model.Book;
+
 public class BookUpdateDTO {
     private String title;
     private String author;
@@ -43,5 +45,9 @@ public class BookUpdateDTO {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public static BookUpdateDTO fromBook(Book book) {
+        return new BookUpdateDTO(book.getTitle(), book.getAuthor(), book.getContent(), book.getCategoryId());
     }
 }

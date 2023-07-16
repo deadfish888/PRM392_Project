@@ -15,12 +15,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.prm392_project.MainApplication;
 import com.example.prm392_project.R;
+import com.example.prm392_project.data.DTO.Book.BookCreateDTO;
+import com.example.prm392_project.data.DTO.Book.BookUpdateDTO;
 import com.example.prm392_project.data.model.Book;
 import com.example.prm392_project.data.model.Category;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Activity_Admin_Book extends AppCompatActivity {
 
@@ -35,6 +41,10 @@ public class Activity_Admin_Book extends AppCompatActivity {
 
     private ListView lvBook;
     private ArrayAdapter<Book> lvBookAdapter;
+
+    private Callback<List<Book>> loadBooksCallback;
+    private Callback<Book> updateBookCallback;
+    private Callback<Void> deleteBookCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,38 +70,26 @@ public class Activity_Admin_Book extends AppCompatActivity {
         this.findViewById(R.id.activity_admin_book_btn_delete).setOnClickListener(this::onClickDelete);
         this.findViewById(R.id.activity_admin_book_btn_search).setOnClickListener(this::onClickSearch);
 
-        this.categories = new ArrayList<>();
-        this.categories.add(new Category(1, "A"));
-        this.categories.add(new Category(2, "B"));
-        this.categories.add(new Category(3, "C"));
-        this.categories.add(new Category(4, "D"));
-        this.categories.add(new Category(5, "E"));
-        this.spnCategory.setAdapter(new ArrayAdapter<>(this.getBaseContext(), android.R.layout.simple_spinner_dropdown_item, this.categories));
-        this.spnCategory.setOnItemSelectedListener(new SpnCategoryOnItemSelected());
+        this.loadBooksCallback = new LoadBooksCallback();
+        this.updateBookCallback = new UpdateBookCallback();
+        this.deleteBookCallback = new DeleteBookCallback();
 
-        this.lvBookAdapter = new LvBookAdapter();
-        this.lvBookAdapter.add(new Book()
-                .id(1)
-                .title("asdfadsfasdfasdf")
-                .author("Asdfasdfjkhasdflhkjasd")
-                .content("asdfjlkhadfslhfdashjkdfaslhfdajlhkdfashjhjdkas")
-                .categoryId(1)
-                .category(new Category(1, "A"))
-        );
-        this.lvBookAdapter.add(new Book().id(2).categoryId(2).category(new Category(2, "B")));
-        this.lvBook.setAdapter(this.lvBookAdapter);
+        MainApplication.categoryApiManager.GetAllCategories(new LoadCategoriesCallback());
     }
 
     private void onClickCreate(View _ignored) {
-
+        Book book = this.getBook();
+        MainApplication.bookApiManager.PostBook(BookCreateDTO.fromBook(book), this.updateBookCallback);
     }
 
     private void onClickUpdate(View _ignored) {
-
+        Book book = this.getBook();
+        MainApplication.bookApiManager.PutBook(book.getId(), BookUpdateDTO.fromBook(book), this.updateBookCallback);
     }
 
     private void onClickDelete(View _ignored) {
-
+        Book book = this.getBook();
+        MainApplication.bookApiManager.DeleteBook(book.getId(), this.deleteBookCallback);
     }
 
     private void onClickSearch(View _ignored) {
@@ -99,8 +97,10 @@ public class Activity_Admin_Book extends AppCompatActivity {
     }
 
     private Book getBook() {
+        String id = this.txtId.getText().toString();
+        if (id.isEmpty()) id = "0";
         return new Book(
-                Integer.parseInt(this.txtId.getText().toString()),
+                Integer.parseInt(id),
                 this.txtTitle.getText().toString(),
                 this.txtAuthor.getText().toString(),
                 this.txtContent.getText().toString(),
@@ -116,6 +116,12 @@ public class Activity_Admin_Book extends AppCompatActivity {
         return -1;
     }
 
+    private void setCategory(Book book) {
+        int categoryIndex = Activity_Admin_Book.this.getCategoryIndex(book.getCategoryId());
+        if (categoryIndex == -1) return;
+        book.setCategory(Activity_Admin_Book.this.categories.get(categoryIndex));
+    }
+
     private class SpnCategoryOnItemSelected implements AdapterView.OnItemSelectedListener {
 
         @Override
@@ -127,6 +133,70 @@ public class Activity_Admin_Book extends AppCompatActivity {
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
             Activity_Admin_Book.this.categoryId = 0;
+        }
+    }
+
+    private class LoadBooksCallback implements Callback<List<Book>> {
+
+        @Override
+        public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+            if (!response.isSuccessful()) return;
+            response.body().forEach(Activity_Admin_Book.this::setCategory);
+            Activity_Admin_Book.this.lvBookAdapter.clear();
+            Activity_Admin_Book.this.lvBookAdapter.addAll(response.body());
+        }
+
+        @Override
+        public void onFailure(Call<List<Book>> call, Throwable t) {
+        }
+    }
+
+    private class UpdateBookCallback implements Callback<Book> {
+
+        @Override
+        public void onResponse(Call<Book> call, Response<Book> response) {
+            if (!response.isSuccessful()) return;
+            MainApplication.bookApiManager.GetBooks(Activity_Admin_Book.this.loadBooksCallback);
+        }
+
+        @Override
+        public void onFailure(Call<Book> call, Throwable t) {
+        }
+    }
+
+    private class DeleteBookCallback implements Callback<Void> {
+
+        @Override
+        public void onResponse(Call<Void> call, Response<Void> response) {
+            if (!response.isSuccessful()) return;
+            MainApplication.bookApiManager.GetBooks(Activity_Admin_Book.this.loadBooksCallback);
+        }
+
+        @Override
+        public void onFailure(Call<Void> call, Throwable t) {
+        }
+    }
+
+    private class LoadCategoriesCallback implements Callback<List<Category>> {
+
+        @Override
+        public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+            if (!response.isSuccessful()) return;
+            Activity_Admin_Book.this.categories = response.body();
+            Activity_Admin_Book.this.spnCategory.setAdapter(new ArrayAdapter<>(
+                    Activity_Admin_Book.this.getBaseContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    Activity_Admin_Book.this.categories)
+            );
+            Activity_Admin_Book.this.spnCategory.setOnItemSelectedListener(new SpnCategoryOnItemSelected());
+
+            Activity_Admin_Book.this.lvBookAdapter = new LvBookAdapter();
+            Activity_Admin_Book.this.lvBook.setAdapter(Activity_Admin_Book.this.lvBookAdapter);
+            MainApplication.bookApiManager.GetBooks(Activity_Admin_Book.this.loadBooksCallback);
+        }
+
+        @Override
+        public void onFailure(Call<List<Category>> call, Throwable t) {
         }
     }
 
