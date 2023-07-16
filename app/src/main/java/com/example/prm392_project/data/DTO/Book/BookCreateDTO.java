@@ -1,5 +1,7 @@
 package com.example.prm392_project.data.DTO.Book;
 
+import com.example.prm392_project.data.model.Book;
+
 public class BookCreateDTO {
     private String title;
     private String author;
@@ -43,6 +45,10 @@ public class BookCreateDTO {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public static BookCreateDTO fromBook(Book book) {
+        return new BookCreateDTO(book.getTitle(), book.getAuthor(), book.getContent(), book.getCategoryId());
     }
 }
 

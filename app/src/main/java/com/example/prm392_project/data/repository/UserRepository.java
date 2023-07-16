@@ -14,6 +14,7 @@ public class UserRepository {
     private final UserApiManager apiManager;
     private final MutableLiveData<List<UserInfo>> allUsers = new MutableLiveData();
     private final MutableLiveData<UserInfo> user = new MutableLiveData();
+    private final MutableLiveData<Boolean> flag = new MutableLiveData();
     private UserRepository(UserApiManager apiManager) {        this.apiManager = apiManager;    }
 
     public static UserRepository getInstance(UserApiManager apiManager) {
@@ -58,6 +59,36 @@ public class UserRepository {
             @Override
             public void onFailure(Call<UserInfo> call, Throwable t) {
                 user.postValue(null);
+            }
+        });
+        return user;
+    }
+
+    public MutableLiveData<Boolean> deleteUser(int id){
+        apiManager.deleteUser(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                flag.setValue(true);
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                flag.setValue(false);
+            }
+        }, id);
+        return flag;
+    }
+
+    public MutableLiveData<UserInfo> updateUser(UserInfo userInfo){
+        apiManager.updateUser(userInfo, new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                user.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+
             }
         });
         return user;

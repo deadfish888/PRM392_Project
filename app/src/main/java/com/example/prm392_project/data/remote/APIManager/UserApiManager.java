@@ -38,4 +38,13 @@ public class UserApiManager extends BaseAPIManager<IUserAPI> {
         Call<UserInfo> usersCall = service.PutUserPhone(userUpdateDTO);
         usersCall.enqueue(callback);
     }
+
+    public void deleteUser(Callback<Boolean> callback, int id){
+        Call<Boolean> userDeleteCall = service.deleteUser(id);
+        userDeleteCall.enqueue(callback);
+    }
+    public void updateUser(UserInfo user, Callback<UserInfo> callback){
+        Call<UserInfo> userInfoCall = service.updateUser(user);
+        userInfoCall.enqueue(callback);
+    }
 }
