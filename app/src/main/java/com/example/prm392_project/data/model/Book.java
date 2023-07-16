@@ -1,11 +1,16 @@
 package com.example.prm392_project.data.model;
 
 public class Book {
+
     private int id;
     private String title;
     private String author;
     private String content;
     private Integer categoryId;
+    private Category category;
+
+    public Book() {
+    }
 
     public Book(int id, String title, String author, String content, Integer categoryId) {
         this.id = id;
@@ -53,5 +58,43 @@ public class Book {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Category getCategory() {
+        return this.category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Book id(int id) {
+        setId(id);
+        return this;
+    }
+
+    public Book title(String title) {
+        setTitle(title);
+        return this;
+    }
+
+    public Book author(String author) {
+        setAuthor(author);
+        return this;
+    }
+
+    public Book content(String content) {
+        setContent(content);
+        return this;
+    }
+
+    public Book categoryId(Integer categoryId) {
+        setCategoryId(categoryId);
+        return this;
+    }
+
+    public Book category(Category category) {
+        setCategory(category);
+        return this;
     }
 }
