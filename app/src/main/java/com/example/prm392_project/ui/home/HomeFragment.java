@@ -29,13 +29,14 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private BooksAdapter booksAdapter;
     HomeViewModel homeViewModel;
+    View root;
+    RecyclerView booksRecyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this, new HomeViewModelFactory()).get(HomeViewModel.class);
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        root = binding.getRoot();
         setHasOptionsMenu(true);
 
         Category searchCategory = null;
@@ -47,18 +48,18 @@ public class HomeFragment extends Fragment {
             ((MainActivity) getActivity()).getSupportActionBar().setTitle(searchCategory.getName());
         }
 
+        setUpBookRecyclerView(searchCategory);
+        return root;
+    }
+
+    private void setUpBookRecyclerView(Category searchCategory) {
         ContentLoadingProgressBar progress = root.findViewById(R.id.progress);
-        RecyclerView booksRecyclerView = root.findViewById(R.id.book_recycler_view);
-        OnItemClickListener onBookClickListener = (view, book) -> {
-            String bookJson = new Gson().toJson(book);
-            Bundle args = new Bundle();
-            args.putString("bookInfo", bookJson);
-            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_bookInfoFragment, args);
-        };
-        booksAdapter = new BooksAdapter(root.getContext(), onBookClickListener);
+        booksRecyclerView = root.findViewById(R.id.book_recycler_view);
+        progress.show();
+
+        setUpBooksAdapter();
         booksRecyclerView.setAdapter(booksAdapter);
         booksRecyclerView.setLayoutManager(new GridLayoutManager(root.getContext(), 2));
-        progress.show();
         if (searchCategory != null){
             homeViewModel.searchBooks(null, searchCategory.getId()).observe(getViewLifecycleOwner(), books -> {
                 booksAdapter.setBooks(books);
@@ -70,7 +71,16 @@ public class HomeFragment extends Fragment {
                 progress.hide();
             });
         }
-        return root;
+    }
+
+    private void setUpBooksAdapter() {
+        OnItemClickListener onBookClickListener = (view, book) -> {
+            String bookJson = new Gson().toJson(book);
+            Bundle args = new Bundle();
+            args.putString("bookInfo", bookJson);
+            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_nav_home_to_bookInfoFragment, args);
+        };
+        booksAdapter = new BooksAdapter(root.getContext(), onBookClickListener);
     }
 
     @Override
