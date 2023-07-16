@@ -111,7 +111,8 @@ public class AdminFragment extends Fragment {
     }
 
     private void OnClickUserButton() {
-        Log.d("LogDm", "clickOnUser");
+        Intent i = new Intent(getContext(), UserManager.class);
+        startActivity(i);
     }
 
 }
